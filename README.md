@@ -1,2 +1,2 @@
 # AI_FPGA
-running ANN on an FPGA
+Goal is to run a Tensorflow / Keras ANN on an FPGA using HLS4ML.
