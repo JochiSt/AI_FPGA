@@ -5,8 +5,7 @@ from tensorflow import keras
 
 from generate_waveform import generate_waveform
 from parameters import *
-from network import generate_network
-
+from network import create_model, save_model
 
 # number of samples for training, testing etc.
 SAMPLES = 100000
@@ -31,7 +30,7 @@ def generate_training_data():
 if __name__ == "__main__":
 
     # generate the network
-    model_1 = generate_network()
+    model_1 = create_model()
 
     # We'll use 60% of our data for training and 20% for testing. The remaining 20%
     # will be used for validation. Calculate the indices of each section.
@@ -55,17 +54,11 @@ if __name__ == "__main__":
     # Double check that our splits add up correctly
     assert (len(x_train) + len(x_validate) + len(x_test) ) ==  SAMPLES
 
-    # save an image of the ANN
-    tf.keras.utils.plot_model(model_1, 
-            to_file='model_1.png',        # output file name
-            show_layer_activations=True,  # show activation functions
-            show_layer_names=True,        # show layer names
-            show_dtype=True,              # show datatype
-            show_shapes=True,             # show input / output shapes
-            rankdir='LR'                  # left to right image
-        )
-
     # fully train the network
-    history_1 = model_1.fit(y_train, x_train, epochs=400, batch_size=333, validation_data=(y_validate, x_validate))
+    history_1 = model_1.fit(y_train, x_train, epochs=10, batch_size=333, validation_data=(y_validate, x_validate))
+
+    save_model(model_1)
+
+    # pruning + quantisation
 
 
