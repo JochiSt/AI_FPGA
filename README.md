@@ -22,5 +22,5 @@ If the installation stops on generating the installed hardware list - [this answ
 
 
 # References
-
-[1] https://jiafulow.github.io/blog/2021/02/17/simple-fully-connected-nn-firmware-using-hls4ml/
+[1] https://fastmachinelearning.org/hls4ml/
+[2] https://jiafulow.github.io/blog/2021/02/17/simple-fully-connected-nn-firmware-using-hls4ml/
