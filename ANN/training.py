@@ -3,8 +3,13 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 
+# import waveform generation
 from generate_waveform import generate_waveform
+
+# import parameters
 from parameters import *
+
+# import network / model related functions
 from network import create_model, save_model
 
 # number of samples for training, testing etc.
@@ -60,5 +65,6 @@ if __name__ == "__main__":
     save_model(model_1)
 
     # pruning + quantisation
+
 
 
