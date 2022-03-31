@@ -1,0 +1,14 @@
+KerasJson: network_v0.4.json
+KerasH5: network_v0.4_weights.h5
+OutputDir: ann-hls-test
+ProjectName: anntest
+XilinxPart: xc7a35tcpg236-1
+ClockPeriod: 10ns
+
+IOType: io_parallel # options: io_serial/io_parallel
+HLSConfig:
+        Model:
+                Precision: ap_fixed<16,6>
+                ReuseFactor: 1
+                Strategy: Latency  # options: Latency/Resource
+
