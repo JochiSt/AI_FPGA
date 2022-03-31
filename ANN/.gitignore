@@ -6,3 +6,6 @@ __pycache__
 # Tensorflow / Keras output
 *.h5
 *.json
+
+# generated images
+*.png
