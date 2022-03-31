@@ -2,3 +2,7 @@ __pycache__
 *.pyc
 
 *.swp
+
+# Tensorflow / Keras output
+*.h5
+*.json
