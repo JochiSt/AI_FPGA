@@ -60,7 +60,7 @@ if __name__ == "__main__":
     assert (len(x_train) + len(x_validate) + len(x_test) ) ==  SAMPLES
 
     # fully train the network
-    history_1 = model_1.fit(y_train, x_train, epochs=10, batch_size=333, validation_data=(y_validate, x_validate))
+    history_1 = model_1.fit(y_train, x_train, epochs=50, batch_size=333, validation_data=(y_validate, x_validate))
 
     save_model(model_1)
 
