@@ -19,51 +19,62 @@ def create_model(name="network_v0.4"):
 
     layer_cnt=0
     x = keras.layers.Dense(32, 
-    kernel_regularizer=keras.regularizers.l1(0.00001),                       
-    name="layer_%d"%(layer_cnt))(inputs)
+                            activation="relu",
+                            kernel_regularizer=keras.regularizers.l1(0.00001),
+                            name="layer_%d"%(layer_cnt))(inputs)
     layer_cnt+=1
 
     x = keras.layers.Dropout(0.005)(x)
 
+    x = keras.layers.BatchNormalization()(x)
     x = keras.layers.Dense(32, 
-    kernel_regularizer=keras.regularizers.l1(0.00001),
-    name="layer_%d"%(layer_cnt))(x)
+                            activation="relu",
+                            kernel_regularizer=keras.regularizers.l1(0.00001),
+                            name="layer_%d"%(layer_cnt))(x)
     layer_cnt+=1
 
     x = keras.layers.Dropout(0.005)(x)
 
+    x = keras.layers.BatchNormalization()(x)
     x = keras.layers.Dense(32, 
-    kernel_regularizer=keras.regularizers.l1(0.00001), 
-    name="layer_%d"%(layer_cnt) )(x)
+                            activation="relu",
+                            kernel_regularizer=keras.regularizers.l1(0.00001),
+                            name="layer_%d"%(layer_cnt) )(x)
     layer_cnt+=1
 
+    x = keras.layers.BatchNormalization()(x)
     x = keras.layers.Dense(32, 
-    kernel_regularizer=keras.regularizers.l1(0.00001), 
-    name="layer_%d"%(layer_cnt) )(x)
+                            activation="relu",
+                            kernel_regularizer=keras.regularizers.l1(0.00001),
+                            name="layer_%d"%(layer_cnt) )(x)
     layer_cnt+=1
 
+    x = keras.layers.BatchNormalization()(x)
     x = keras.layers.Dense(32, 
-    activation="relu",                       
-    kernel_regularizer=keras.regularizers.l1(0.00001), 
-    name="layer_%d"%(layer_cnt) )(x)
+                            activation="relu",
+                            kernel_regularizer=keras.regularizers.l1(0.00001),
+                            name="layer_%d"%(layer_cnt) )(x)
     layer_cnt+=1
 
+    x = keras.layers.BatchNormalization()(x)
     x = keras.layers.Dense(32,
-    activation="relu",                       
-    kernel_regularizer=keras.regularizers.l1(0.00001), 
-    name="layer_%d"%(layer_cnt))(x)
+                            activation="relu",
+                            kernel_regularizer=keras.regularizers.l1(0.00001),
+                            name="layer_%d"%(layer_cnt))(x)
     layer_cnt+=1
 
+    x = keras.layers.BatchNormalization()(x)
     x = keras.layers.Dense(16, 
-    activation="relu",                       
-    kernel_regularizer=keras.regularizers.l1(0.00001), 
-    name="layer_%d"%(layer_cnt))(x)
+                            activation="relu",
+                            kernel_regularizer=keras.regularizers.l1(0.00001),
+                            name="layer_%d"%(layer_cnt))(x)
     layer_cnt+=1
 
+    x = keras.layers.BatchNormalization()(x)
     x = keras.layers.Dense(16, 
-    activation="relu",
-    kernel_regularizer=keras.regularizers.l1(0.00001), 
-    name="layer_%d"%(layer_cnt))(x)
+                            activation="relu",
+                            kernel_regularizer=keras.regularizers.l1(0.00001),
+                            name="layer_%d"%(layer_cnt))(x)
     layer_cnt+=1
 
     # final layer for classification
