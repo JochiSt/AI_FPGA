@@ -9,6 +9,6 @@ IOType: io_parallel # options: io_serial/io_parallel
 HLSConfig:
         Model:
                 Precision: ap_fixed<16,6>
-                ReuseFactor: 8
+                ReuseFactor: 20
                 Strategy: Latency  # options: Latency/Resource
 
