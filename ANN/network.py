@@ -18,23 +18,23 @@ def create_model(name="network_v0.5"):
     inputs = keras.Input(shape=(128,), name="waveform_input")
 
     layer_cnt=0
-    x = keras.layers.Dense(32, 
+    x = keras.layers.Dense(8, 
                             activation="relu",
                             kernel_regularizer=keras.regularizers.l1(0.00001),
                             name="layer_%d"%(layer_cnt))(inputs)
     layer_cnt+=1
 
     x = keras.layers.Dropout(0.005)(x)
-
     x = keras.layers.BatchNormalization()(x)
-    x = keras.layers.Dense(16, 
+    x = keras.layers.Dense(8, 
                             activation="relu",
                             kernel_regularizer=keras.regularizers.l1(0.00001),
                             name="layer_%d"%(layer_cnt))(x)
     layer_cnt+=1
 
+    x = keras.layers.Dropout(0.005)(x)
     x = keras.layers.BatchNormalization()(x)
-    x = keras.layers.Dense(16, 
+    x = keras.layers.Dense(8, 
                             activation="relu",
                             kernel_regularizer=keras.regularizers.l1(0.00001),
                             name="layer_%d"%(layer_cnt))(x)
