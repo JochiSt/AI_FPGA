@@ -77,3 +77,6 @@ def save_model(model, name=None):
     with open(name + '.json', 'w') as outfile:
         outfile.write(model.to_json())
     return
+
+if __name__ == "__main__":
+    model = create_model()
