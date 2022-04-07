@@ -10,7 +10,7 @@ from tensorflow import keras
 # number of samples for training, testing etc.
 SAMPLES = 100000
 
-def create_model(name="network_v0.4"):
+def create_model(name="network_v0.5"):
     """
         
     """
@@ -27,43 +27,6 @@ def create_model(name="network_v0.4"):
     x = keras.layers.Dropout(0.005)(x)
 
     x = keras.layers.BatchNormalization()(x)
-    x = keras.layers.Dense(32, 
-                            activation="relu",
-                            kernel_regularizer=keras.regularizers.l1(0.00001),
-                            name="layer_%d"%(layer_cnt))(x)
-    layer_cnt+=1
-
-    x = keras.layers.Dropout(0.005)(x)
-
-    x = keras.layers.BatchNormalization()(x)
-    x = keras.layers.Dense(32, 
-                            activation="relu",
-                            kernel_regularizer=keras.regularizers.l1(0.00001),
-                            name="layer_%d"%(layer_cnt) )(x)
-    layer_cnt+=1
-
-    x = keras.layers.BatchNormalization()(x)
-    x = keras.layers.Dense(32, 
-                            activation="relu",
-                            kernel_regularizer=keras.regularizers.l1(0.00001),
-                            name="layer_%d"%(layer_cnt) )(x)
-    layer_cnt+=1
-
-    x = keras.layers.BatchNormalization()(x)
-    x = keras.layers.Dense(32, 
-                            activation="relu",
-                            kernel_regularizer=keras.regularizers.l1(0.00001),
-                            name="layer_%d"%(layer_cnt) )(x)
-    layer_cnt+=1
-
-    x = keras.layers.BatchNormalization()(x)
-    x = keras.layers.Dense(32,
-                            activation="relu",
-                            kernel_regularizer=keras.regularizers.l1(0.00001),
-                            name="layer_%d"%(layer_cnt))(x)
-    layer_cnt+=1
-
-    x = keras.layers.BatchNormalization()(x)
     x = keras.layers.Dense(16, 
                             activation="relu",
                             kernel_regularizer=keras.regularizers.l1(0.00001),
@@ -78,8 +41,7 @@ def create_model(name="network_v0.4"):
     layer_cnt+=1
 
     # final layer for classification
-    outputs = keras.layers.Dense(3, 
-    name="classification")(x)
+    outputs = keras.layers.Dense(3, name="classification")(x)
 
     model_1 = keras.Model(inputs=inputs, outputs=outputs, name=name)
     model_1.summary()
