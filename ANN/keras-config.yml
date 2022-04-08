@@ -2,7 +2,10 @@ KerasJson: network_v0.5.json
 KerasH5: network_v0.5_weights.h5
 OutputDir: ann-hls-test
 ProjectName: anntest
-XilinxPart: xc7a35tcpg236-1
+# BASYS3
+#XilinxPart: xc7a35tcpg236-1
+# NEXYS 4
+XilinxPart: xc7a100tcsg324-1
 ClockPeriod: 10ns
 
 IOType: io_parallel # options: io_serial/io_parallel
