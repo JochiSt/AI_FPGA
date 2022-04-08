@@ -9,3 +9,6 @@ __pycache__
 
 # generated images
 *.png
+
+# generated configs
+generated_keras-config.yml
