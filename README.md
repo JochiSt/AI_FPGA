@@ -21,6 +21,9 @@ If the installation seems to be on hold, fake `/etc/os-releases` to a version, w
 If the installation stops on generating the installed hardware list - [this answer records helped me](https://support.xilinx.com/s/question/0D52E00006iHjbcSAC/vivado-20211-installation-hangs-at-generating-installed-device-list?language=en_US) - and I generated this list manually after the installer exits.
 
 
+### Install Digilent Board files
+This [manual](https://digilent.com/reference/programmable-logic/guides/installing-vivado-and-vitis) from Digilent helped me to install the Board Files from Digilent.
+
 # References
 [1] https://fastmachinelearning.org/hls4ml/              
 [2] https://jiafulow.github.io/blog/2021/02/17/simple-fully-connected-nn-firmware-using-hls4ml/
