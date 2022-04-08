@@ -1,0 +1,3 @@
+[submodule "nandland"]
+	path = nandland
+	url = https://github.com/nandland/nandland.git
