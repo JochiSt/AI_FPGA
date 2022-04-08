@@ -1,5 +1,5 @@
-KerasJson: network_v0.4.json
-KerasH5: network_v0.4_weights.h5
+KerasJson: network_v0.5.json
+KerasH5: network_v0.5_weights.h5
 OutputDir: ann-hls-test
 ProjectName: anntest
 XilinxPart: xc7a35tcpg236-1
