@@ -34,6 +34,12 @@ def create_model(name="sine_v0.1"):
 
         That's a good starting point to get HLS4ML running and to understand
         and optimise its behaviour.
+
+        https://www.digikey.de/en/maker/projects/intro-to-tinyml-part-1-training-a-model-for-arduino-in-tensorflow/8f1fc8c0b83d417ab521c48864d2a8ec
+
+        and
+
+        https://gist.github.com/ShawnHymel/79237fe6aee5a3653c497d879f746c0c
     """
 
     inputs = keras.Input(shape=(1,), name="waveform_input")
