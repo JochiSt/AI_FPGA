@@ -70,8 +70,12 @@ def create_model(name="sine_v0.1"):
     model = keras.Model(inputs=inputs, outputs=outputs, name=name)
     model.summary()
 
-    # Compile the model using the standard 'adam' optimizer and the mean squared error or 'mse' loss function for regression.
-    model.compile(optimizer='adam', loss='mse', metrics=['accuracy'])
+    # Compile the model using the standard 'adam' optimizer and
+    # the mean squared error or 'mse' loss function for regression.
+    # the mean absolute error or 'mae' is also used as a metric
+    model.compile(optimizer='adam',
+        loss='mse',
+        metrics=['mae', 'mse'])
 
     return  model
 
