@@ -9,7 +9,15 @@ from tensorflow import keras
 
 def create_model(name="sine_v0.1"):
     """
-        
+        Simple Network which approximates a sine
+
+        y = sin(x), where sin is replaced by the network
+
+        This approximation can be achieved by few layers and hence few
+        mathematical operations.
+
+        That's a good starting point to get HLS4ML running and to understand
+        and optimise its behaviour.
     """
 
     inputs = keras.Input(shape=(1,), name="waveform_input")
