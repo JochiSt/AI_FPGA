@@ -1,4 +1,7 @@
 
+# VIM swap files
+*.swp
+
 # VIVADO cache
 *.cache
 *.runs
