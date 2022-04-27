@@ -1,2 +1,10 @@
+# python cache
 __pycache__
+
+# ANN storage
 storedANN
+
+# HLS4ML project
+sinetest.tar.gz
+sinetest
+
