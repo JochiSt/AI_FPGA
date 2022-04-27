@@ -8,3 +8,5 @@ storedANN
 sinetest.tar.gz
 sinetest
 
+# images and plots
+*.png
