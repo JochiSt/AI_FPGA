@@ -1,3 +1,6 @@
 [submodule "nandland"]
 	path = nandland
 	url = https://github.com/nandland/nandland.git
+[submodule "SineTest/AI_TF_helpers"]
+	path = SineTest/AI_TF_helpers
+	url = https://github.com/JochiSt/AI_TF_helpers.git
