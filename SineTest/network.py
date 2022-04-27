@@ -7,6 +7,22 @@ import tensorflow as tf
 # Keras is TensorFlow's high-level API for deep learning
 from tensorflow import keras
 
+# numpy
+import numpy as np
+
+def generate_data(NSAMPLES):
+    """
+        generate training / validation data for the network below
+    """
+
+    # Generate some random samples
+    x_values = np.random.uniform(low=0, high=(2 * np.pi), size=NSAMPLES)
+
+    # Create a noisy sinewave with these values
+    y_values = np.sin(x_values) + (0.1 * np.random.randn(x_values.shape[0]))
+
+    return x_values, y_values
+
 def create_model(name="sine_v0.1"):
     """
         Simple Network which approximates a sine
