@@ -10,6 +10,9 @@ from tensorflow import keras
 # numpy
 import numpy as np
 
+def truth_function(x):
+    return np.sin(x)
+
 def generate_data(NSAMPLES):
     """
         generate training / validation data for the network below
@@ -19,7 +22,8 @@ def generate_data(NSAMPLES):
     x_values = np.random.uniform(low=0, high=(2 * np.pi), size=NSAMPLES)
 
     # Create a noisy sinewave with these values
-    y_values = np.sin(x_values) + (0.1 * np.random.randn(x_values.shape[0]))
+    y_values = truth_function(x_values)\
+                    + (0.1 * np.random.randn(x_values.shape[0]))
 
     return x_values, y_values
 
