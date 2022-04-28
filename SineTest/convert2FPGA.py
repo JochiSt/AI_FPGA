@@ -29,6 +29,7 @@ model = load_model('storedANN/sine_v0.1.h5')
 
 import hls4ml
 from print_dict import print_dict
+# create basic config
 config = hls4ml.utils.config_from_keras_model(model, granularity='model')
 print("-----------------------------------")
 print("Configuration")
@@ -75,7 +76,7 @@ hls_model.compile()
 
 hls_model.build(
                 csim=False,  #
-                export=False # somehow the export fails
+                export=False # somehow the export fails in version 2020.1
                 )
 
 # Check the reports
