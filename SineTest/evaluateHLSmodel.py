@@ -12,14 +12,16 @@ from network import generate_data
 
 import hls4ml
 
-def evaluateHLSmodel(model, NSAMPLES=1000, config=None):
-    # evaluate model and make some plots
-    # TODO
+def createKerasConfig(model, granularity='model'):
+    # create basic config
+    config = hls4ml.utils.config_from_keras_model(model, 
+                                                    granularity=granularity)
+    return config
 
+def evaluateHLSmodel(model, NSAMPLES=1000, config=None):
     if not config:
-        # create basic config
-        config = hls4ml.utils.config_from_keras_model(model, 
-                                                        granularity='model')
+        # if we do not have a config, we make our own
+        config = createKerasConfig(model)
 
     config['Model']['Precision'] = 'ap_fixed<14,6>'
 
@@ -33,7 +35,7 @@ def evaluateHLSmodel(model, NSAMPLES=1000, config=None):
                                 output_dir='sinetest',
                                 part='xcu250-figd2104-2L-e')
 
-    # model is written to output dir
+    # model is written to output dir, if we want or not
 
     # generate data for evaluation
     x_test, y_test = generate_data(NSAMPLES)
