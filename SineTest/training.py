@@ -51,7 +51,9 @@ def training(model, SAMPLES=100000):
     # Train the network
     # fully train the network
     history = model.fit(x_train, y_train,
-                            epochs=50, batch_size=333,
+                            epochs=50,          # how long do we want to train 
+                            batch_size=333,     # how large is one batch
+                            shuffle=True,
                             validation_data=(x_validate, y_validate))
 
     ###########################################################################
