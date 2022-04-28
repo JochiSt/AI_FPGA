@@ -100,6 +100,7 @@ def training(model, SAMPLES=100000):
     plt.plot(x_test, y_test, 'b.', label='Actual')
     plt.plot(x_test, predictions, 'r.', label='Prediction')
     plt.legend()
+    plt.savefig(model.name+"_prediction.png")
     plt.show()
 
     # pruning + quantisation
