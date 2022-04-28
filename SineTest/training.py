@@ -8,36 +8,22 @@ import matplotlib.pyplot as plt
 # import own helper functions
 import AI_TF_helpers as helpers
 
-# import network / model related functions
-from network import create_model
-from network import generate_data
-
-# number of samples for training, testing etc.
-SAMPLES = 100000
-
-if __name__ == "__main__":
-    # printout the used versions
-    print('Numpy ' + np.__version__)
-    print('TensorFlow ' + tf.__version__)
-    print('Keras ' + tf.keras.__version__)
-
-    # generate the network
-    model = create_model()
+def create_datasets(SAMPLES):
+    # import network / model related functions
+    from network import generate_data
 
     # We'll use 60% of our data for training and 20% for testing.
     # The remaining 20% will be used for validation. Calculate the indices of
     # each section.
-    TRAIN_SPLIT =  int(0.6 * SAMPLES)
-    TEST_SPLIT = int(0.2 * SAMPLES + TRAIN_SPLIT)
-    print("using %d points for training and %d points for testing"%(
-                                                    TRAIN_SPLIT, TEST_SPLIT))
+    TRAIN_SPLIT = int(0.6 * SAMPLES)
+    TEST_SPLIT =  int(0.2 * SAMPLES + TRAIN_SPLIT)
 
     # generate the training data
     x_values, y_values = generate_data(SAMPLES)
 
     # convert data into numpy arrays
-    y_values = np.array(y_values) # parameters
     x_values = np.array(x_values) # waveforms
+    y_values = np.array(y_values) # parameters
 
     # Use np.split to chop our data into three parts.
     # The second argument to np.split is an array of indices where the data
@@ -46,15 +32,27 @@ if __name__ == "__main__":
     x_train, x_test, x_validate = np.split(x_values, [TRAIN_SPLIT, TEST_SPLIT])
     y_train, y_test, y_validate = np.split(y_values, [TRAIN_SPLIT, TEST_SPLIT])
 
+    return x_train, x_test, x_validate, y_train, y_test, y_validate
+
+def training(model, SAMPLES=100000):
+    x_train, x_test, x_validate,\
+    y_train, y_test, y_validate = create_datasets(SAMPLES)
+
     # Double check that our splits add up correctly
     assert (len(x_train) + len(x_validate) + len(x_test) ) ==  SAMPLES
+
+    print("Points using for:")
+    print(" - Training:  ", len(x_train) )
+    print(" - Validation:", len(x_validate) )
+    print(" - Testing:   ", len(x_test) )
+    print("in total:     ", SAMPLES)
 
     ###########################################################################
     # Train the network
     # fully train the network
     history = model.fit(x_train, y_train,
                             epochs=50, batch_size=333,
-                            validation_data=(y_validate, x_validate))
+                            validation_data=(x_validate, y_validate))
 
     ###########################################################################
     # create typical deep learning performance plots
@@ -62,9 +60,10 @@ if __name__ == "__main__":
     loss = history.history['loss']
     val_loss = history.history['val_loss']
 
+    # create x-axis
     epochs = range(1, len(loss) + 1)
 
-    plt.plot(epochs, loss, 'b', label='Training loss')
+    plt.plot(epochs, loss,     'b', label='Training loss')
     plt.plot(epochs, val_loss, 'r', label='Validation loss')
     plt.title('Training and validation loss')
     plt.legend()
@@ -87,5 +86,14 @@ if __name__ == "__main__":
 
     # pruning + quantisation
 
+if __name__ == "__main__":
+    # printout the used versions
+    print('Numpy ' + np.__version__)
+    print('TensorFlow ' + tf.__version__)
+    print('Keras ' + tf.keras.__version__)
 
+    from network import create_model
+    # generate the network
+    model = create_model()
 
+    training(model)
