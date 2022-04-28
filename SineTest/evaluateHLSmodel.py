@@ -8,7 +8,7 @@ from print_dict import print_dict
 import numpy as np
 import matplotlib.pyplot as plt
 
-from network import generate_data
+from network import generate_data, truth_function
 
 import hls4ml
 
@@ -43,17 +43,15 @@ def evaluateHLSmodel(model, NSAMPLES=1000, config=None):
     # compile HLS model
     hls_model.compile()
 
+    y_truth = truth_function( x_test )
     y_hls = np.array([])
-    y_keras = np.array([])
-    
     for x in x_test:
-        y_hls_   = hls_model.predict(np.array(x))
-        y_hls = np.append(y_hls, y_hls_)
-
+        y_hls = np.append(y_hls, hls_model.predict( np.array(x) ))
     y_keras = model.predict( x_test )
 
     # compare to Keras
     fig, ax1 = plt.subplots()
+    ax1.plot(x_test, y_truth, 'g.', label='Truth')
     ax1.plot(x_test, y_keras, 'b.', label='Keras')
     ax1.plot(x_test, y_hls,   'r.', label='HLS4ML')
 
