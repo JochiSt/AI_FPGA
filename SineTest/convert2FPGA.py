@@ -46,7 +46,7 @@ hls_model = hls4ml.converters.convert_from_keras_model(model,
 hls4ml.utils.plot_model(hls_model,
                         show_shapes=True,
                         show_precision=True,
-                        to_file=model.name+"hls4ml.png"
+                        to_file=model.name+"_hls4ml.png"
                         )
 
 # Compile, predict
