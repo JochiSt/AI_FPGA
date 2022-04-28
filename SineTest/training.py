@@ -114,3 +114,7 @@ if __name__ == "__main__":
     model = create_model()
 
     training(model)
+
+    helpers.save_model(model)
+
+    helpers.plot_weights(model)
