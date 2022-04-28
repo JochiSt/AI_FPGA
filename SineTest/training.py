@@ -62,13 +62,29 @@ def training(model, SAMPLES=100000):
     loss = history.history['loss']
     val_loss = history.history['val_loss']
 
+    # the MAE mean absolute error is a good quantity, which gives the 
+    # 'accuracy' of our model.
+    mae = history.history['mae']
+    val_mae = history.history['val_mae']
+
     # create x-axis
     epochs = range(1, len(loss) + 1)
 
-    plt.plot(epochs, loss,     'b', label='Training loss')
-    plt.plot(epochs, val_loss, 'r', label='Validation loss')
-    plt.title('Training and validation loss')
-    plt.legend()
+    # create plots
+    fig, ax1 = plt.subplots()
+    ax1.plot(epochs, loss,     'b', label='Training loss')
+    ax1.plot(epochs, val_loss, 'b--', label='Validation loss')
+
+    ax2 = ax1.twinx()
+    ax2.plot(epochs, mae,     'r', label='Training MAE')
+    ax2.plot(epochs, val_mae, 'r--', label='Validation MAE')
+
+    ax1.set_xlabel('epochs')
+    ax1.set_ylabel('loss', color='b')
+    ax2.set_ylabel('MAE', color='r')
+    plt.title('Training and validation Performance')
+    fig.legend()
+    plt.savefig(model.name+"_train_perf.png")
     plt.show()
 
     # save network
