@@ -103,8 +103,6 @@ def training(model, SAMPLES=100000):
     plt.savefig(model.name+"_prediction.png")
     plt.show()
 
-    # pruning + quantisation
-
 if __name__ == "__main__":
     # printout the used versions
     print('Numpy ' + np.__version__)
