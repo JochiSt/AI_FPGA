@@ -182,6 +182,8 @@ def quantize_model(model):
 
     qmodel.summary()
 
+    print_qstats(qmodel)
+
     qmodel._name = qmodel.name + "_quant"
 
     return qmodel
