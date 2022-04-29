@@ -49,26 +49,24 @@ def create_model(name="sine_v0.1"):
     inputs = keras.Input(shape=(1,), name="waveform_input")
 
     layer_cnt=0
-    x = keras.layers.Dense(16, 
-                            activation="relu",
+    x = keras.layers.Dense(16,
                             name="layer_%d"%(layer_cnt))(inputs)
     layer_cnt+=1
+    x = keras.layers.Activation("relu")(x)
 
-    x = keras.layers.Dropout(0.005)(x)
     x = keras.layers.BatchNormalization()(x)
-    x = keras.layers.Dense(8, 
-                            activation="relu",
+    x = keras.layers.Dense(8,
                             name="layer_%d"%(layer_cnt))(x)
     layer_cnt+=1
+    x = keras.layers.Activation("relu")(x)
 
-    x = keras.layers.Dropout(0.005)(x)
     x = keras.layers.BatchNormalization()(x)
-    x = keras.layers.Dense(8, 
-                            activation="relu",
+    x = keras.layers.Dense(8,
                             name="layer_%d"%(layer_cnt))(x)
     layer_cnt+=1
+    x = keras.layers.Activation("relu")(x)
 
-    # final layer for classification
+    # final layer
     outputs = keras.layers.Dense(1, name="output")(x)
 
     model = keras.Model(inputs=inputs, outputs=outputs, name=name)
