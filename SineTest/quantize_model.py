@@ -1,6 +1,7 @@
 from print_dict import print_dict
 
-from tensorflow.keras.models import load_model
+# import own helper functions
+import AI_TF_helpers as helpers
 
 # QKeras
 from qkeras.autoqkeras import *
@@ -9,7 +10,8 @@ from qkeras.utils import model_quantize
 from qkeras.qtools import run_qtools
 from qkeras.qtools import settings as qtools_settings
 
-from training import create_datasets
+from network import create_model
+from training import training, create_datasets
 
 def get_computing_costs(model):
     reference_internal = "fp32"
@@ -143,33 +145,56 @@ def quantize_model(model):
         "goal": goal,
         "quantization_config": quantization_config,
         "learning_rate_optimizer": False,
+        # Do not transfer the weights, because the trainable parameters will
+        # have different shapes
         "transfer_weights": False,
+        # Operation modes
+        # random, bayesian and hyperband
+        # look at https://keras.io/keras_tuner/
         "mode": "random",
         "seed": 42,
         "limit": limit,
         "tune_filters": "layer",
         "tune_filters_exceptions": "^dense",
         "distribution_strategy": cur_strategy,
-        # first layer is input, layer two layers are softmax and flatten
+        # first layer is input, last layer is output
         "layer_indexes": range(1, len(model.layers) - 1),
-        "max_trials": 20
+        # how many optimisation trials should be done?
+        "max_trials": 2
     }
 
-    print("quantizing layers:", [model.layers[i].name for i in run_config["layer_indexes"]])
+    print("quantizing layers:",\
+            [model.layers[i].name for i in run_config["layer_indexes"]]
+            )
 
-    autoqk = AutoQKeras(model, metrics=["acc"], custom_objects=custom_objects, **run_config)
+    autoqk = AutoQKeras(model, metrics=["mse"], 
+                    custom_objects=custom_objects, **run_config)
 
     x_train, x_test, x_validate,\
-    y_train, y_test, y_validate = create_datasets(4096)
+    y_train, y_test, y_validate = create_datasets(10000)
 
-    autoqk.fit(x_train, y_train, validation_data=(x_test, y_test), batch_size=1024, epochs=20)
+    autoqk.fit(x_train, y_train, validation_data=(x_test, y_test),
+                                batch_size=1024,
+                                epochs=50
+                        )
 
     qmodel = autoqk.get_best_model()
-    qmodel.save_weights("qmodel.h5")
 
+    qmodel.summary()
+
+    qmodel._name = qmodel.name + "_quant"
+
+    return qmodel
 
 if __name__ == "__main__":
     # use the already trained model
+    from tensorflow.keras.models import load_model
     model = load_model('storedANN/sine_v0.1.h5')
 
-    quantize_model(model)
+    # unfortunately, saving this model does not work
+    #model = create_model(quantized=False)
+    #model = training(model, store=False)
+
+    qmodel = quantize_model(model)
+
+    helpers.save_model(qmodel)
