@@ -10,6 +10,9 @@ from tensorflow import keras
 # numpy
 import numpy as np
 
+# QKeras
+import qkeras as qk
+
 def truth_function(x):
     return np.sin(x)
 
@@ -27,7 +30,7 @@ def generate_data(NSAMPLES):
 
     return x_values, y_values
 
-def create_model(name="sine_v0.1"):
+def create_model(name="sine_v0.1", quantized=False):
     """
         Simple Network which approximates a sine
 
@@ -46,28 +49,65 @@ def create_model(name="sine_v0.1"):
         https://gist.github.com/ShawnHymel/79237fe6aee5a3653c497d879f746c0c
     """
 
-    inputs = keras.Input(shape=(1,), name="waveform_input")
+    assert type(quantized) == bool
 
-    layer_cnt=0
-    x = keras.layers.Dense(16,
-                            name="layer_%d"%(layer_cnt))(inputs)
-    layer_cnt+=1
-    x = keras.layers.Activation("relu")(x)
+    if quantized:
+        name = name + "_quant"
 
-    x = keras.layers.BatchNormalization()(x)
-    x = keras.layers.Dense(8,
-                            name="layer_%d"%(layer_cnt))(x)
-    layer_cnt+=1
-    x = keras.layers.Activation("relu")(x)
+    if not quantized:
+        inputs = keras.Input(shape=(1,), name="input")
 
-    x = keras.layers.BatchNormalization()(x)
-    x = keras.layers.Dense(8,
-                            name="layer_%d"%(layer_cnt))(x)
-    layer_cnt+=1
-    x = keras.layers.Activation("relu")(x)
+        layer_cnt=0
+        x = keras.layers.Dense(16,
+                                name="layer_%d"%(layer_cnt))(inputs)
+        layer_cnt+=1
+        x = keras.layers.Activation("relu")(x)
 
-    # final layer
-    outputs = keras.layers.Dense(1, name="output")(x)
+        x = keras.layers.BatchNormalization()(x)
+        x = keras.layers.Dense(8,
+                                name="layer_%d"%(layer_cnt))(x)
+        layer_cnt+=1
+        x = keras.layers.Activation("relu")(x)
+
+        x = keras.layers.BatchNormalization()(x)
+        x = keras.layers.Dense(8,
+                                name="layer_%d"%(layer_cnt))(x)
+        layer_cnt+=1
+        x = keras.layers.Activation("relu")(x)
+
+        # final layer
+        outputs = keras.layers.Dense(1, name="output")(x)
+    else:
+        inputs = keras.Input(shape=(1,), name="input")
+
+        layer_cnt=0
+        x = qk.QDense(16,
+                    kernel_quantizer= qk.quantized_bits(5, 0, 1),
+                    bias_quantizer  = qk.quantized_bits(5, 0, 1),
+                    name="layer_%d"%(layer_cnt))(inputs)
+        layer_cnt+=1
+        x = qk.QActivation("quantized_relu(5)")(x)
+
+        x = qk.QDense(8,
+                    kernel_quantizer= qk.quantized_bits(5, 0, 1),
+                    bias_quantizer  = qk.quantized_bits(5, 0, 1),
+                    name="layer_%d"%(layer_cnt))(x)
+        layer_cnt+=1
+        x = qk.QActivation("quantized_relu(5)")(x)
+
+        x = qk.QDense(8,
+                    kernel_quantizer= qk.quantized_bits(5, 0, 1),
+                    bias_quantizer  = qk.quantized_bits(5, 0, 1),
+                    name="layer_%d"%(layer_cnt))(x)
+        layer_cnt+=1
+        x = qk.QActivation("quantized_relu(5)")(x)
+
+        # final layer
+        outputs = qk.QDense(1,
+                    kernel_quantizer= qk.quantized_bits(5, 0, 1),
+                    bias_quantizer  = qk.quantized_bits(5, 0, 1),
+                    name="output")(x)
+
 
     model = keras.Model(inputs=inputs, outputs=outputs, name=name)
     model.summary()
@@ -79,7 +119,10 @@ def create_model(name="sine_v0.1"):
         loss='mse',
         metrics=['mae', 'mse'])
 
+    if quantized:
+        qk.print_qstats(model)
+
     return  model
 
 if __name__ == "__main__":
-    model = create_model()
+    model = create_model( quantized=True )
