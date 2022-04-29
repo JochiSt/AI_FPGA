@@ -8,5 +8,8 @@ storedANN
 sinetest.tar.gz
 sinetest
 
+# AutoQKeras
+*_quant*/
+
 # images and plots
 *.png
