@@ -3,6 +3,7 @@ __pycache__
 
 # ANN storage
 storedANN
+*.h5
 
 # HLS4ML project
 sinetest.tar.gz
