@@ -43,7 +43,10 @@ def impact_post_train_quant(modelfilename, NSAMPLES=1000):
     distances = np.array([])
 
     fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True, figsize=(4,8))
-    plt.title('Comparison of KERAS and HLS4ML')
+    fig.suptitle('Comparison of KERAS and HLS4ML')
+
+    ax1.set_title("Model prediction")
+    ax1.set_title("distance to truth")
 
     ax1.plot(x_test, y_truth, '.', label='Truth', markersize=5)
 
@@ -51,6 +54,7 @@ def impact_post_train_quant(modelfilename, NSAMPLES=1000):
     model = load_model(modelfilename)
     y_keras = model.predict( x_test )
     y_keras = y_keras.flatten()
+
 
     mad_keras = meanAbsDistance( y_truth, y_keras )
 
