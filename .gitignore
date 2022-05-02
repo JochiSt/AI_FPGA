@@ -1,4 +1,7 @@
 
+# HLS4ML project archives
+*.tar.gz
+
 # VIM swap files
 *.swp
 
