@@ -95,17 +95,16 @@ def impact_post_train_quant(modelfilename, NSAMPLES=1000):
     ax2.set_xlabel('x values')
 
     ax1.set_ylim([-1.5, 1.5])
-#    ax1.legend(loc='best')
-
-    #plt.set_title('Comparison between Keras and HLS4ML')
+    fig.legend()
 
     plt.savefig(model.name+"_PostQuantEffect_CMP.png")
     plt.show()
 
+    ###########################################################################
     fig, ax1 = plt.subplots()
 
     x = np.arange(0, len(quantisations))
-    ax1.plot( x, '.-', distances, label='Mean Absolute Distance')
+    ax1.plot( x, distances, '.-', label='Mean Absolute Distance')
 
     # plot the comparison to keras
     ax1.axhline(y=mad_keras, color='r', linestyle='-', label="Keras")
