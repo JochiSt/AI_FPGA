@@ -5,7 +5,8 @@ def getDistances( truth, predict):
     """
         return the distances between the model and the truth
     """
-    return truth - predict
+    distance = np.subtract( truth , predict )
+    return distance
 
 
 def meanAbsDistance( truth, predict ):
