@@ -18,6 +18,10 @@ from evaluateHLSmodel import convert2HLS, createKerasConfig
 from compareModel import meanAbsDistance, getDistances
 
 def impact_post_train_quant(modelfilename, NSAMPLES=1000):
+    """
+        study the impact of post training quantisation
+        using the same quantisation for all layers
+    """
 
     quantisations = [
         'ap_fixed<18,6>',
