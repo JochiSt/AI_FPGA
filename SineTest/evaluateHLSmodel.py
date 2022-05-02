@@ -18,12 +18,10 @@ def createKerasConfig(model, granularity='model'):
                                                     granularity=granularity)
     return config
 
-def evaluateHLSmodel(model, NSAMPLES=1000, config=None):
+def convert2HLS(model, config):
     if not config:
         # if we do not have a config, we make our own
         config = createKerasConfig(model)
-
-    config['Model']['Precision'] = 'ap_fixed<14,6>'
 
     print("-----------------------------------")
     print("Configuration")
@@ -34,14 +32,19 @@ def evaluateHLSmodel(model, NSAMPLES=1000, config=None):
                                 project_name='sinetest',
                                 output_dir='sinetest',
                                 part='xcu250-figd2104-2L-e')
-
     # model is written to output dir, if we want or not
+
+    # compile HLS model
+    hls_model.compile()
+
+    return hls_model
+
+def evaluateHLSmodel(model, NSAMPLES=1000, config=None):
+    # convert TF model into HLS4ML
+    hls_model = convert2HLS(model, config)
 
     # generate data for evaluation
     x_test, y_test = generate_data(NSAMPLES)
-   
-    # compile HLS model
-    hls_model.compile()
 
     y_truth = truth_function( x_test )
     y_hls = np.array([])
