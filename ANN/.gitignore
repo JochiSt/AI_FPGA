@@ -12,3 +12,6 @@ __pycache__
 
 # generated configs
 generated_keras-config.yml
+
+# HLS4ML project dir
+ann-hls-test
