@@ -3,8 +3,8 @@
 """
 
 import os
-os.environ['PATH'] = '/opt/Xilinx/Vivado/2019.2/bin:' + os.environ['PATH']
-#os.environ['PATH'] = '/opt/Xilinx/Vivado/2020.1/bin:' + os.environ['PATH']
+#os.environ['PATH'] = '/opt/Xilinx/Vivado/2019.2/bin:' + os.environ['PATH']
+os.environ['PATH'] = '/opt/Xilinx/Vivado/2020.1/bin:' + os.environ['PATH']
 
 # use the already trained model
 from tensorflow.keras.models import load_model
@@ -17,6 +17,14 @@ import hls4ml
 from print_dict import print_dict
 # create basic config
 config = hls4ml.utils.config_from_keras_model(model, granularity='model')
+
+# set the reuse factor
+config['Model']['ReuseFactor'] = 2
+# set clock frequency
+config['ClockPeriod'] = 10 # ns => 100MHz
+# use parallel IO
+config['IOType'] = 'io_parallel'
+
 print("-----------------------------------")
 print("Configuration")
 print_dict(config)
@@ -25,7 +33,7 @@ hls_model = hls4ml.converters.convert_from_keras_model(model,
                             hls_config=config,
                             project_name='sinetest',
                             output_dir='sinetest',
-                            part='xc7a100tcsg324-1'
+                            part='xc7a100tcsg324-1' # Nexys 4
                             )
 
 # Let's visualise what we created. The model architecture is shown,
