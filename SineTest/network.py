@@ -75,6 +75,11 @@ def create_model(name="sine_v0.1", quantized=False):
         layer_cnt+=1
         x = keras.layers.Activation("relu")(x)
 
+        x = keras.layers.Dense(8,
+                                name="layer_%d"%(layer_cnt))(x)
+        layer_cnt+=1
+        x = keras.layers.Activation("relu")(x)
+
         # final layer
         outputs = keras.layers.Dense(1, name="output")(x)
     else:
@@ -85,6 +90,13 @@ def create_model(name="sine_v0.1", quantized=False):
                     kernel_quantizer= qk.quantized_bits(5, 0, 1),
                     bias_quantizer  = qk.quantized_bits(5, 0, 1),
                     name="layer_%d"%(layer_cnt))(inputs)
+        layer_cnt+=1
+        x = qk.QActivation("quantized_relu(5)")(x)
+
+        x = qk.QDense(8,
+                    kernel_quantizer= qk.quantized_bits(5, 0, 1),
+                    bias_quantizer  = qk.quantized_bits(5, 0, 1),
+                    name="layer_%d"%(layer_cnt))(x)
         layer_cnt+=1
         x = qk.QActivation("quantized_relu(5)")(x)
 
