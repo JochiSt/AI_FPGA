@@ -15,26 +15,36 @@ model = load_model('storedANN/sine_v0.1.h5')
 
 import hls4ml
 from print_dict import print_dict
-# create basic config
-config = hls4ml.utils.config_from_keras_model(model, granularity='model')
 
-# set the reuse factor
-config['Model']['ReuseFactor'] = 2
-# set clock frequency
-config['ClockPeriod'] = 10 # ns => 100MHz
-# use parallel IO
-config['IOType'] = 'io_parallel'
+# some basic config
+#hls4ml.model.optimizer.OutputRoundingSaturationMode.layers = ['Activation']
+#hls4ml.model.optimizer.OutputRoundingSaturationMode.rounding_mode = 'AP_RND'
+#hls4ml.model.optimizer.OutputRoundingSaturationMode.saturation_mode = 'AP_SAT'
+
+# create basic config
+model_cfg = hls4ml.utils.config_from_keras_model(model, granularity='model')
+model_cfg['Model'] = {}
+model_cfg['Model']['ReuseFactor'] = 2
+model_cfg['Model']['Strategy'] = 'Resource'
+model_cfg['Model']['Precision'] = 'ap_fixed<16,6>'
+model_cfg['Model']['Precision'] = 'ap_fixed<16,6>'
+
+cfg = hls4ml.converters.create_config()
+cfg['Backend'] = 'Vivado'               # alt: VivadoAccelerator
+cfg['IOType'] = 'io_parallel'
+cfg['XilinxPart'] = 'xc7a100tcsg324-1'  # Nexys 4
+cfg['Part'] = cfg['XilinxPart']
+cfg['HLSConfig'] = model_cfg
+cfg['KerasModel'] = model
+cfg['OutputDir'] = 'sinetest'
+cfg['ProjectName'] = 'sinetest'
+cfg['ClockPeriod'] = 10                 # 10 ns => 100MHz
 
 print("-----------------------------------")
 print("Configuration")
-print_dict(config)
+print_dict(cfg)
 print("-----------------------------------")
-hls_model = hls4ml.converters.convert_from_keras_model(model,
-                            hls_config=config,
-                            project_name='sinetest',
-                            output_dir='sinetest',
-                            part='xc7a100tcsg324-1' # Nexys 4
-                            )
+hls_model = hls4ml.converters.keras_to_hls(cfg)
 
 # Let's visualise what we created. The model architecture is shown,
 # annotated with the shape and data types
