@@ -111,7 +111,7 @@ if __name__ == "__main__":
 
     from network import create_model
     # generate the network
-    model = create_model(quantized=True)
+    model = create_model(quantized=False)
 
     training(model)
 
