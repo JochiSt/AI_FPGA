@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Tue May  3 09:33:32 2022" VIVADOVERSION="2020.1">
+
+  <SYSTEMINFO ARCH="artix7" BOARD="digilentinc.com:nexys4:part0:1.1" DEVICE="7a100t" NAME="ANN_sandbox" PACKAGE="csg324" SPEEDGRADE="-1"/>
+
+  <EXTERNALPORTS>
+    <PORT DIR="I" LEFT="7" NAME="data_in" RIGHT="0" SIGIS="data" SIGNAME="External_Ports_data_in">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="External_Ports" PORT="data_out"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" LEFT="7" NAME="data_out" RIGHT="0" SIGIS="data" SIGNAME="External_Ports_data_in">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="External_Ports" PORT="data_in"/>
+      </CONNECTIONS>
+    </PORT>
+  </EXTERNALPORTS>
+
+  <EXTERNALINTERFACES/>
+
+  <MODULES/>
+
+</EDKSYSTEM>

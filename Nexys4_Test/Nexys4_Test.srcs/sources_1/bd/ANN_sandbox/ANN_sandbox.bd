@@ -1,0 +1,48 @@
+{
+  "design": {
+    "design_info": {
+      "boundary_crc": "0x9E2728A79E2728A7",
+      "device": "xc7a100tcsg324-1",
+      "name": "ANN_sandbox",
+      "rev_ctrl_bd_flag": "RevCtrlBdOff",
+      "synth_flow_mode": "Hierarchical",
+      "tool_version": "2020.1",
+      "validated": "true"
+    },
+    "design_tree": {},
+    "ports": {
+      "data_in": {
+        "type": "data",
+        "direction": "I",
+        "left": "7",
+        "right": "0",
+        "parameters": {
+          "LAYERED_METADATA": {
+            "value": "undef",
+            "value_src": "default"
+          }
+        }
+      },
+      "data_out": {
+        "type": "data",
+        "direction": "O",
+        "left": "7",
+        "right": "0",
+        "parameters": {
+          "LAYERED_METADATA": {
+            "value": "undef",
+            "value_src": "default"
+          }
+        }
+      }
+    },
+    "nets": {
+      "data_in_1": {
+        "ports": [
+          "data_in",
+          "data_out"
+        ]
+      }
+    }
+  }
+}
