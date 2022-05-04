@@ -86,38 +86,42 @@ def create_model(name="sine_v0.1", quantized=False):
         inputs = keras.Input(shape=(1,), name="input")
 
         layer_cnt=0
+
+        quant_bit_param = (13,6,1)
+
+        # quantized_bits(bits=8, integer=0, symmetric=0, keep_negative=1)
         x = qk.QDense(16,
-                    kernel_quantizer= qk.quantized_bits(5, 0, 1),
-                    bias_quantizer  = qk.quantized_bits(5, 0, 1),
+                    kernel_quantizer= qk.quantized_bits( *quant_bit_param ),
+                    bias_quantizer  = qk.quantized_bits( *quant_bit_param ),
                     name="layer_%d"%(layer_cnt))(inputs)
         layer_cnt+=1
         x = qk.QActivation("quantized_relu(5)")(x)
 
         x = qk.QDense(8,
-                    kernel_quantizer= qk.quantized_bits(5, 0, 1),
-                    bias_quantizer  = qk.quantized_bits(5, 0, 1),
+                    kernel_quantizer= qk.quantized_bits( *quant_bit_param ),
+                    bias_quantizer  = qk.quantized_bits( *quant_bit_param ),
                     name="layer_%d"%(layer_cnt))(x)
         layer_cnt+=1
         x = qk.QActivation("quantized_relu(5)")(x)
 
         x = qk.QDense(8,
-                    kernel_quantizer= qk.quantized_bits(5, 0, 1),
-                    bias_quantizer  = qk.quantized_bits(5, 0, 1),
+                    kernel_quantizer= qk.quantized_bits( *quant_bit_param ),
+                    bias_quantizer  = qk.quantized_bits( *quant_bit_param ),
                     name="layer_%d"%(layer_cnt))(x)
         layer_cnt+=1
         x = qk.QActivation("quantized_relu(5)")(x)
 
         x = qk.QDense(8,
-                    kernel_quantizer= qk.quantized_bits(5, 0, 1),
-                    bias_quantizer  = qk.quantized_bits(5, 0, 1),
+                    kernel_quantizer= qk.quantized_bits( *quant_bit_param ),
+                    bias_quantizer  = qk.quantized_bits( *quant_bit_param ),
                     name="layer_%d"%(layer_cnt))(x)
         layer_cnt+=1
         x = qk.QActivation("quantized_relu(5)")(x)
 
         # final layer
         outputs = qk.QDense(1,
-                    kernel_quantizer= qk.quantized_bits(5, 0, 1),
-                    bias_quantizer  = qk.quantized_bits(5, 0, 1),
+                    kernel_quantizer= qk.quantized_bits( *quant_bit_param ),
+                    bias_quantizer  = qk.quantized_bits( *quant_bit_param ),
                     name="output")(x)
 
 
