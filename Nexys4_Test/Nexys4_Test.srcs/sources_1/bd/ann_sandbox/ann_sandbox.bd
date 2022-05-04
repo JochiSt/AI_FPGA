@@ -1,0 +1,262 @@
+{
+  "design": {
+    "design_info": {
+      "boundary_crc": "0xE8083CC22BFC0842",
+      "device": "xc7a100tcsg324-1",
+      "name": "ann_sandbox",
+      "rev_ctrl_bd_flag": "RevCtrlBdOff",
+      "synth_flow_mode": "Hierarchical",
+      "tool_version": "2020.1",
+      "validated": "true"
+    },
+    "design_tree": {
+      "sinetest_0": "",
+      "ila_0": ""
+    },
+    "ports": {
+      "CLK100MHZ": {
+        "type": "clk",
+        "direction": "I",
+        "parameters": {
+          "ASSOCIATED_RESET": {
+            "value": "ap_rst",
+            "value_src": "default"
+          },
+          "CLK_DOMAIN": {
+            "value": "ann_sandbox_CLK100MHZ",
+            "value_src": "default"
+          },
+          "FREQ_HZ": {
+            "value": "100000000",
+            "value_src": "default"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.000",
+            "value_src": "default"
+          }
+        }
+      },
+      "ap_rst": {
+        "type": "rst",
+        "direction": "I",
+        "parameters": {
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "POLARITY": {
+            "value": "ACTIVE_HIGH"
+          }
+        }
+      },
+      "const_size_in_1_0": {
+        "type": "data",
+        "direction": "O",
+        "left": "15",
+        "right": "0",
+        "parameters": {
+          "LAYERED_METADATA": {
+            "value": "undef",
+            "value_src": "default"
+          }
+        }
+      },
+      "const_size_in_1_ap_vld_0": {
+        "direction": "O"
+      },
+      "const_size_out_1_0": {
+        "type": "data",
+        "direction": "O",
+        "left": "15",
+        "right": "0",
+        "parameters": {
+          "LAYERED_METADATA": {
+            "value": "undef",
+            "value_src": "default"
+          }
+        }
+      },
+      "const_size_out_1_ap_vld_0": {
+        "direction": "O"
+      },
+      "data_in": {
+        "type": "data",
+        "direction": "I",
+        "left": "15",
+        "right": "0",
+        "parameters": {
+          "LAYERED_METADATA": {
+            "value": "undef",
+            "value_src": "default"
+          }
+        }
+      },
+      "data_in_valid": {
+        "direction": "I"
+      },
+      "data_out": {
+        "type": "data",
+        "direction": "O",
+        "left": "15",
+        "right": "0",
+        "parameters": {
+          "LAYERED_METADATA": {
+            "value": "undef",
+            "value_src": "default"
+          }
+        }
+      },
+      "data_out_valid": {
+        "direction": "O"
+      },
+      "ap_start": {
+        "direction": "I"
+      },
+      "ap_done": {
+        "direction": "O"
+      },
+      "ap_ready": {
+        "direction": "O"
+      },
+      "ap_idle": {
+        "direction": "O"
+      }
+    },
+    "components": {
+      "sinetest_0": {
+        "vlnv": "JochiSt:SineTest:sinetest:0.1",
+        "xci_name": "ann_sandbox_sinetest_0_0"
+      },
+      "ila_0": {
+        "vlnv": "xilinx.com:ip:ila:6.2",
+        "xci_name": "ann_sandbox_ila_0_0",
+        "parameters": {
+          "C_ENABLE_ILA_AXI_MON": {
+            "value": "false"
+          },
+          "C_MONITOR_TYPE": {
+            "value": "Native"
+          },
+          "C_NUM_OF_PROBES": {
+            "value": "8"
+          },
+          "C_PROBE0_TYPE": {
+            "value": "1"
+          },
+          "C_PROBE0_WIDTH": {
+            "value": "16"
+          },
+          "C_PROBE1_TYPE": {
+            "value": "1"
+          },
+          "C_PROBE1_WIDTH": {
+            "value": "16"
+          }
+        }
+      }
+    },
+    "nets": {
+      "ap_clk_0_1": {
+        "ports": [
+          "CLK100MHZ",
+          "sinetest_0/ap_clk",
+          "ila_0/clk"
+        ]
+      },
+      "ap_rst_0_1": {
+        "ports": [
+          "ap_rst",
+          "sinetest_0/ap_rst"
+        ]
+      },
+      "sinetest_0_const_size_in_1": {
+        "ports": [
+          "sinetest_0/const_size_in_1",
+          "const_size_in_1_0"
+        ]
+      },
+      "sinetest_0_const_size_in_1_ap_vld": {
+        "ports": [
+          "sinetest_0/const_size_in_1_ap_vld",
+          "const_size_in_1_ap_vld_0"
+        ]
+      },
+      "sinetest_0_const_size_out_1": {
+        "ports": [
+          "sinetest_0/const_size_out_1",
+          "const_size_out_1_0"
+        ]
+      },
+      "sinetest_0_const_size_out_1_ap_vld": {
+        "ports": [
+          "sinetest_0/const_size_out_1_ap_vld",
+          "const_size_out_1_ap_vld_0"
+        ]
+      },
+      "input_V_0_1": {
+        "ports": [
+          "data_in",
+          "sinetest_0/input_V",
+          "ila_0/probe0"
+        ]
+      },
+      "input_V_ap_vld_0_1": {
+        "ports": [
+          "data_in_valid",
+          "sinetest_0/input_V_ap_vld",
+          "ila_0/probe3"
+        ]
+      },
+      "sinetest_0_layer16_out_0_V": {
+        "ports": [
+          "sinetest_0/layer16_out_0_V",
+          "data_out",
+          "ila_0/probe1"
+        ]
+      },
+      "sinetest_0_layer16_out_0_V_ap_vld": {
+        "ports": [
+          "sinetest_0/layer16_out_0_V_ap_vld",
+          "data_out_valid",
+          "ila_0/probe2"
+        ]
+      },
+      "ap_start_1": {
+        "ports": [
+          "ap_start",
+          "sinetest_0/ap_start",
+          "ila_0/probe4"
+        ]
+      },
+      "sinetest_0_ap_done": {
+        "ports": [
+          "sinetest_0/ap_done",
+          "ap_done",
+          "ila_0/probe5"
+        ]
+      },
+      "sinetest_0_ap_ready": {
+        "ports": [
+          "sinetest_0/ap_ready",
+          "ap_ready",
+          "ila_0/probe6"
+        ]
+      },
+      "sinetest_0_ap_idle": {
+        "ports": [
+          "sinetest_0/ap_idle",
+          "ap_idle",
+          "ila_0/probe7"
+        ]
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
 {
 	"version": "1.0",
 	"modules": {
-		"ANN_sandbox": {
+		"ann_sandbox": {
 			"proto_instances": {
 			}
 		}

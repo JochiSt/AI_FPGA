@@ -1,45 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Root MajorVersion="0" MinorVersion="39">
-  <CompositeFile CompositeFileTopName="ANN_sandbox" CanBeSetAsTop="false" CanDisplayChildGraph="true">
+  <CompositeFile CompositeFileTopName="ann_sandbox" CanBeSetAsTop="false" CanDisplayChildGraph="true">
     <Description>Composite Fileset</Description>
-    <Generation Name="SYNTHESIS" State="GENERATED" Timestamp="1651563212"/>
-    <Generation Name="IMPLEMENTATION" State="GENERATED" Timestamp="1651563212"/>
-    <Generation Name="SIMULATION" State="GENERATED" Timestamp="1651563212"/>
-    <Generation Name="HW_HANDOFF" State="GENERATED" Timestamp="1651563212"/>
+    <Generation Name="SYNTHESIS" State="GENERATED" Timestamp="1651672763"/>
+    <Generation Name="IMPLEMENTATION" State="GENERATED" Timestamp="1651672763"/>
+    <Generation Name="SIMULATION" State="GENERATED" Timestamp="1651672763"/>
+    <Generation Name="HW_HANDOFF" State="GENERATED" Timestamp="1651672763"/>
     <FileCollection Name="SOURCES" Type="SOURCES">
-      <File Name="synth/ANN_sandbox.vhd" Type="VHDL">
+      <File Name="ip/ann_sandbox_sinetest_0_0/ann_sandbox_sinetest_0_0.xci" Type="IP">
+        <Instance HierarchyPath="sinetest_0"/>
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTHESIS"/>
+        <UsedIn Val="IMPLEMENTATION"/>
+        <UsedIn Val="SIMULATION"/>
+      </File>
+      <File Name="synth/ann_sandbox.vhd" Type="VHDL">
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTHESIS"/>
       </File>
-      <File Name="sim/ANN_sandbox.vhd" Type="VHDL">
+      <File Name="sim/ann_sandbox.vhd" Type="VHDL">
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SIMULATION"/>
       </File>
-      <File Name="ANN_sandbox_ooc.xdc" Type="XDC">
+      <File Name="ip/ann_sandbox_ila_0_0/ann_sandbox_ila_0_0.xci" Type="IP">
+        <Instance HierarchyPath="ila_0"/>
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTHESIS"/>
+        <UsedIn Val="IMPLEMENTATION"/>
+        <UsedIn Val="SIMULATION"/>
+      </File>
+      <File Name="ann_sandbox_ooc.xdc" Type="XDC">
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTHESIS"/>
         <UsedIn Val="IMPLEMENTATION"/>
         <UsedIn Val="OUT_OF_CONTEXT"/>
       </File>
-      <File Name="hw_handoff/ANN_sandbox.hwh" Type="HwHandoff">
+      <File Name="hw_handoff/ann_sandbox.hwh" Type="HwHandoff">
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="HW_HANDOFF"/>
       </File>
-      <File Name="hw_handoff/ANN_sandbox_bd.tcl">
+      <File Name="hw_handoff/ann_sandbox_bd.tcl">
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="HW_HANDOFF"/>
       </File>
-      <File Name="synth/ANN_sandbox.hwdef">
+      <File Name="synth/ann_sandbox.hwdef">
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="HW_HANDOFF"/>
       </File>
-      <File Name="sim/ANN_sandbox.protoinst">
+      <File Name="sim/ann_sandbox.protoinst">
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SIMULATION"/>

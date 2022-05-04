@@ -1,6 +1,6 @@
 
 ################################################################
-# This is a generated script based on design: ANN_sandbox
+# This is a generated script based on design: ann_sandbox
 #
 # Though there are limitations about the generated script,
 # the main purpose of this utility is to make learning
@@ -35,7 +35,7 @@ if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
 ################################################################
 
 # To test this script, run the following commands from Vivado Tcl console:
-# source ANN_sandbox_script.tcl
+# source ann_sandbox_script.tcl
 
 # If there is no project opened, this script will create a
 # project, but make sure you do not have an existing project
@@ -50,7 +50,7 @@ if { $list_projs eq "" } {
 
 # CHANGE DESIGN NAME HERE
 variable design_name
-set design_name ANN_sandbox
+set design_name ann_sandbox
 
 # If you do not already have an existing IP Integrator design open,
 # you can create a design using the following command:
@@ -158,11 +158,54 @@ proc create_root_design { parentCell } {
   # Create interface ports
 
   # Create ports
-  set data_in [ create_bd_port -dir I -from 7 -to 0 -type data data_in ]
-  set data_out [ create_bd_port -dir O -from 7 -to 0 -type data data_out ]
+  set CLK100MHZ [ create_bd_port -dir I -type clk CLK100MHZ ]
+  set ap_done [ create_bd_port -dir O ap_done ]
+  set ap_idle [ create_bd_port -dir O ap_idle ]
+  set ap_ready [ create_bd_port -dir O ap_ready ]
+  set ap_rst [ create_bd_port -dir I -type rst ap_rst ]
+  set_property -dict [ list \
+   CONFIG.POLARITY {ACTIVE_HIGH} \
+ ] $ap_rst
+  set ap_start [ create_bd_port -dir I ap_start ]
+  set const_size_in_1_0 [ create_bd_port -dir O -from 15 -to 0 -type data const_size_in_1_0 ]
+  set const_size_in_1_ap_vld_0 [ create_bd_port -dir O const_size_in_1_ap_vld_0 ]
+  set const_size_out_1_0 [ create_bd_port -dir O -from 15 -to 0 -type data const_size_out_1_0 ]
+  set const_size_out_1_ap_vld_0 [ create_bd_port -dir O const_size_out_1_ap_vld_0 ]
+  set data_in [ create_bd_port -dir I -from 15 -to 0 -type data data_in ]
+  set data_in_valid [ create_bd_port -dir I data_in_valid ]
+  set data_out [ create_bd_port -dir O -from 15 -to 0 -type data data_out ]
+  set data_out_valid [ create_bd_port -dir O data_out_valid ]
+
+  # Create instance: ila_0, and set properties
+  set ila_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:ila:6.2 ila_0 ]
+  set_property -dict [ list \
+   CONFIG.C_ENABLE_ILA_AXI_MON {false} \
+   CONFIG.C_MONITOR_TYPE {Native} \
+   CONFIG.C_NUM_OF_PROBES {8} \
+   CONFIG.C_PROBE0_TYPE {1} \
+   CONFIG.C_PROBE0_WIDTH {16} \
+   CONFIG.C_PROBE1_TYPE {1} \
+   CONFIG.C_PROBE1_WIDTH {16} \
+ ] $ila_0
+
+  # Create instance: sinetest_0, and set properties
+  set sinetest_0 [ create_bd_cell -type ip -vlnv JochiSt:SineTest:sinetest:0.1 sinetest_0 ]
 
   # Create port connections
-  connect_bd_net -net data_in_1 [get_bd_ports data_in] [get_bd_ports data_out]
+  connect_bd_net -net ap_clk_0_1 [get_bd_ports CLK100MHZ] [get_bd_pins ila_0/clk] [get_bd_pins sinetest_0/ap_clk]
+  connect_bd_net -net ap_rst_0_1 [get_bd_ports ap_rst] [get_bd_pins sinetest_0/ap_rst]
+  connect_bd_net -net ap_start_1 [get_bd_ports ap_start] [get_bd_pins ila_0/probe4] [get_bd_pins sinetest_0/ap_start]
+  connect_bd_net -net input_V_0_1 [get_bd_ports data_in] [get_bd_pins ila_0/probe0] [get_bd_pins sinetest_0/input_V]
+  connect_bd_net -net input_V_ap_vld_0_1 [get_bd_ports data_in_valid] [get_bd_pins ila_0/probe3] [get_bd_pins sinetest_0/input_V_ap_vld]
+  connect_bd_net -net sinetest_0_ap_done [get_bd_ports ap_done] [get_bd_pins ila_0/probe5] [get_bd_pins sinetest_0/ap_done]
+  connect_bd_net -net sinetest_0_ap_idle [get_bd_ports ap_idle] [get_bd_pins ila_0/probe7] [get_bd_pins sinetest_0/ap_idle]
+  connect_bd_net -net sinetest_0_ap_ready [get_bd_ports ap_ready] [get_bd_pins ila_0/probe6] [get_bd_pins sinetest_0/ap_ready]
+  connect_bd_net -net sinetest_0_const_size_in_1 [get_bd_ports const_size_in_1_0] [get_bd_pins sinetest_0/const_size_in_1]
+  connect_bd_net -net sinetest_0_const_size_in_1_ap_vld [get_bd_ports const_size_in_1_ap_vld_0] [get_bd_pins sinetest_0/const_size_in_1_ap_vld]
+  connect_bd_net -net sinetest_0_const_size_out_1 [get_bd_ports const_size_out_1_0] [get_bd_pins sinetest_0/const_size_out_1]
+  connect_bd_net -net sinetest_0_const_size_out_1_ap_vld [get_bd_ports const_size_out_1_ap_vld_0] [get_bd_pins sinetest_0/const_size_out_1_ap_vld]
+  connect_bd_net -net sinetest_0_layer16_out_0_V [get_bd_ports data_out] [get_bd_pins ila_0/probe1] [get_bd_pins sinetest_0/layer16_out_0_V]
+  connect_bd_net -net sinetest_0_layer16_out_0_V_ap_vld [get_bd_ports data_out_valid] [get_bd_pins ila_0/probe2] [get_bd_pins sinetest_0/layer16_out_0_V_ap_vld]
 
   # Create address segments
 
