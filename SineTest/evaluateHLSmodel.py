@@ -67,14 +67,6 @@ def evaluateHLSmodel(model, NSAMPLES=1000, config=None):
 
 
 if __name__ == "__main__":
-    import sys
-    # printout the used versions
-    print('Python ' + sys.version)
-    print('Numpy ' + np.__version__)
-    print('TensorFlow ' + tf.__version__)
-    print('Keras ' + tf.keras.__version__)
-    print('HLS4ML ' + hls4ml.__version__)
-
     # use the already trained model
     model = load_model('storedANN/sine_v0.1.h5')
     evaluateHLSmodel(model)
