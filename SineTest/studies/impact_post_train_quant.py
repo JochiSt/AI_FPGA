@@ -105,6 +105,12 @@ def impact_post_train_quant(modelfilename, NSAMPLES=1000):
     plt.show()
 
     ###########################################################################
+    # save results to file
+    with open('post_quant_train.dat', 'w') as f:
+        f.write('KERAS ; %f\n'%(mad_keras))
+        for i, quant in enumerate(quantisations):
+            f.write('%s ; %f\n'%(quant,distances[i]))
+
     fig, ax1 = plt.subplots()
 
     x = np.arange(0, len(quantisations))
