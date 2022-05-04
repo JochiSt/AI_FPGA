@@ -35,15 +35,18 @@ def evaluateQuantModel(qmodel, NSAMPLES=1000):
 
 
 if __name__ == "__main__":
-    # printout the used versions
-    print('Numpy ' + np.__version__)
-    print('TensorFlow ' + tf.__version__)
-    print('Keras ' + tf.keras.__version__)
+    if False:
+        # use the already trained model
+        from tensorflow.keras.models import load_model
+        from qkeras.utils import _add_supported_quantized_objects
+        co = {}
+        _add_supported_quantized_objects(co)
+        model = load_model('storedANN/sine_v0.1_quant', custom_objects=co)
+    else:
+        from network import create_model
+        # generate the network
+        model = create_model(quantized=True)
+        from training import training
+        training(model)
 
-    # use the already trained model
-    from tensorflow.keras.models import load_model
-    from qkeras.utils import _add_supported_quantized_objects
-    co = {}
-    _add_supported_quantized_objects(co)
-    model = load_model('storedANN/sine_v0.1_quant', custom_objects=co)
     evaluateQuantModel(model)
