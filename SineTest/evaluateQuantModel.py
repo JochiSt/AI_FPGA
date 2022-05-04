@@ -8,9 +8,10 @@ from print_dict import print_dict
 import numpy as np
 import matplotlib.pyplot as plt
 
-from network import generate_data, truth_function
-
 from qkeras import *
+
+from network import generate_data, truth_function
+from compareModel import meanAbsDistance, getDistances
 
 def evaluateQuantModel(qmodel, NSAMPLES=1000):
     # generate data for evaluation
@@ -18,8 +19,12 @@ def evaluateQuantModel(qmodel, NSAMPLES=1000):
 
     y_truth = truth_function( x_test )
     y_quant = np.array([])
-    for x in x_test:
-        y_quant = np.append(y_quant, qmodel.predict( np.array(x) ))
+#    for x in x_test:
+#        y_quant = np.append(y_quant, qmodel.predict( x ))
+    y_quant = qmodel.predict( x_test )
+
+    mad = meanAbsDistance( y_truth, y_quant )
+    print("Quantisated Model :", mad)
 
     # compare to Keras
     fig, ax1 = plt.subplots()
