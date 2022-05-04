@@ -116,7 +116,7 @@ def impact_post_train_quant(modelfilename, NSAMPLES=1000):
     # Set number of ticks for x-axis
     ax1.set_xticks(x)
     # Set ticks labels for x-axis
-    ax1.set_xticklabels( quantisations, fontsize=11, rotation = -45)
+    ax1.set_xticklabels( quantisations, fontsize=11, rotation = 90)
     ax1.set_ylabel('Mean Absolute Difference')
 
     ax1.set_yscale('log')
