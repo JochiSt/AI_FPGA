@@ -5,13 +5,12 @@
       "device": "xc7a100tcsg324-1",
       "name": "ann_sandbox",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
-      "synth_flow_mode": "Hierarchical",
+      "synth_flow_mode": "None",
       "tool_version": "2020.1",
       "validated": "true"
     },
     "design_tree": {
-      "sinetest_0": "",
-      "ila_0": ""
+      "sinetest_0": ""
     },
     "ports": {
       "CLK100MHZ": {
@@ -134,41 +133,13 @@
       "sinetest_0": {
         "vlnv": "JochiSt:SineTest:sinetest:0.1",
         "xci_name": "ann_sandbox_sinetest_0_0"
-      },
-      "ila_0": {
-        "vlnv": "xilinx.com:ip:ila:6.2",
-        "xci_name": "ann_sandbox_ila_0_0",
-        "parameters": {
-          "C_ENABLE_ILA_AXI_MON": {
-            "value": "false"
-          },
-          "C_MONITOR_TYPE": {
-            "value": "Native"
-          },
-          "C_NUM_OF_PROBES": {
-            "value": "8"
-          },
-          "C_PROBE0_TYPE": {
-            "value": "1"
-          },
-          "C_PROBE0_WIDTH": {
-            "value": "16"
-          },
-          "C_PROBE1_TYPE": {
-            "value": "1"
-          },
-          "C_PROBE1_WIDTH": {
-            "value": "16"
-          }
-        }
       }
     },
     "nets": {
       "ap_clk_0_1": {
         "ports": [
           "CLK100MHZ",
-          "sinetest_0/ap_clk",
-          "ila_0/clk"
+          "sinetest_0/ap_clk"
         ]
       },
       "ap_rst_0_1": {
@@ -204,57 +175,49 @@
       "input_V_0_1": {
         "ports": [
           "data_in",
-          "sinetest_0/input_V",
-          "ila_0/probe0"
+          "sinetest_0/input_V"
         ]
       },
       "input_V_ap_vld_0_1": {
         "ports": [
           "data_in_valid",
-          "sinetest_0/input_V_ap_vld",
-          "ila_0/probe3"
+          "sinetest_0/input_V_ap_vld"
         ]
       },
       "sinetest_0_layer16_out_0_V": {
         "ports": [
           "sinetest_0/layer16_out_0_V",
-          "data_out",
-          "ila_0/probe1"
+          "data_out"
         ]
       },
       "sinetest_0_layer16_out_0_V_ap_vld": {
         "ports": [
           "sinetest_0/layer16_out_0_V_ap_vld",
-          "data_out_valid",
-          "ila_0/probe2"
+          "data_out_valid"
         ]
       },
       "ap_start_1": {
         "ports": [
           "ap_start",
-          "sinetest_0/ap_start",
-          "ila_0/probe4"
+          "sinetest_0/ap_start"
         ]
       },
       "sinetest_0_ap_done": {
         "ports": [
           "sinetest_0/ap_done",
-          "ap_done",
-          "ila_0/probe5"
+          "ap_done"
         ]
       },
       "sinetest_0_ap_ready": {
         "ports": [
           "sinetest_0/ap_ready",
-          "ap_ready",
-          "ila_0/probe6"
+          "ap_ready"
         ]
       },
       "sinetest_0_ap_idle": {
         "ports": [
           "sinetest_0/ap_idle",
-          "ap_idle",
-          "ila_0/probe7"
+          "ap_idle"
         ]
       }
     }

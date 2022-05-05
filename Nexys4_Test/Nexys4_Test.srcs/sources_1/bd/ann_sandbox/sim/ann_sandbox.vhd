@@ -1,7 +1,7 @@
 --Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2020.1 (lin64) Build 2902540 Wed May 27 19:54:35 MDT 2020
---Date        : Wed May  4 15:59:20 2022
+--Date        : Thu May  5 08:00:49 2022
 --Host        : einstein running 64-bit Ubuntu 20.04.4 LTS
 --Command     : generate_target ann_sandbox.bd
 --Design      : ann_sandbox
@@ -29,7 +29,7 @@ entity ann_sandbox is
     data_out_valid : out STD_LOGIC
   );
   attribute CORE_GENERATION_INFO : string;
-  attribute CORE_GENERATION_INFO of ann_sandbox : entity is "ann_sandbox,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=ann_sandbox,x_ipVersion=1.00.a,x_ipLanguage=VHDL,numBlks=2,numReposBlks=2,numNonXlnxBlks=1,numHierBlks=0,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=1,numHdlrefBlks=0,numPkgbdBlks=0,bdsource=USER,da_clkrst_cnt=1,synth_mode=OOC_per_IP}";
+  attribute CORE_GENERATION_INFO of ann_sandbox : entity is "ann_sandbox,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=ann_sandbox,x_ipVersion=1.00.a,x_ipLanguage=VHDL,numBlks=1,numReposBlks=1,numNonXlnxBlks=1,numHierBlks=0,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=1,numHdlrefBlks=0,numPkgbdBlks=0,bdsource=USER,da_clkrst_cnt=2,synth_mode=Global}";
   attribute HW_HANDOFF : string;
   attribute HW_HANDOFF of ann_sandbox : entity is "ann_sandbox.hwdef";
 end ann_sandbox;
@@ -53,19 +53,6 @@ architecture STRUCTURE of ann_sandbox is
     ap_idle : out STD_LOGIC
   );
   end component ann_sandbox_sinetest_0_0;
-  component ann_sandbox_ila_0_0 is
-  port (
-    clk : in STD_LOGIC;
-    probe0 : in STD_LOGIC_VECTOR ( 15 downto 0 );
-    probe1 : in STD_LOGIC_VECTOR ( 15 downto 0 );
-    probe2 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe3 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe4 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe5 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe6 : in STD_LOGIC_VECTOR ( 0 to 0 );
-    probe7 : in STD_LOGIC_VECTOR ( 0 to 0 )
-  );
-  end component ann_sandbox_ila_0_0;
   signal ap_clk_0_1 : STD_LOGIC;
   signal ap_rst_0_1 : STD_LOGIC;
   signal ap_start_1 : STD_LOGIC;
@@ -109,18 +96,6 @@ begin
   data_out_valid <= sinetest_0_layer16_out_0_V_ap_vld;
   input_V_0_1(15 downto 0) <= data_in(15 downto 0);
   input_V_ap_vld_0_1 <= data_in_valid;
-ila_0: component ann_sandbox_ila_0_0
-     port map (
-      clk => ap_clk_0_1,
-      probe0(15 downto 0) => input_V_0_1(15 downto 0),
-      probe1(15 downto 0) => sinetest_0_layer16_out_0_V(15 downto 0),
-      probe2(0) => sinetest_0_layer16_out_0_V_ap_vld,
-      probe3(0) => input_V_ap_vld_0_1,
-      probe4(0) => ap_start_1,
-      probe5(0) => sinetest_0_ap_done,
-      probe6(0) => sinetest_0_ap_ready,
-      probe7(0) => sinetest_0_ap_idle
-    );
 sinetest_0: component ann_sandbox_sinetest_0_0
      port map (
       ap_clk => ap_clk_0_1,

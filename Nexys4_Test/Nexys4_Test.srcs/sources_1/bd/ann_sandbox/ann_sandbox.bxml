@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Root MajorVersion="0" MinorVersion="39">
-  <CompositeFile CompositeFileTopName="ann_sandbox" CanBeSetAsTop="false" CanDisplayChildGraph="true">
+  <CompositeFile CompositeFileTopName="ann_sandbox" CanBeSetAsTop="true" CanDisplayChildGraph="true">
     <Description>Composite Fileset</Description>
-    <Generation Name="SYNTHESIS" State="GENERATED" Timestamp="1651672763"/>
-    <Generation Name="IMPLEMENTATION" State="GENERATED" Timestamp="1651672763"/>
-    <Generation Name="SIMULATION" State="GENERATED" Timestamp="1651672763"/>
-    <Generation Name="HW_HANDOFF" State="GENERATED" Timestamp="1651672763"/>
+    <Generation Name="SYNTHESIS" State="GENERATED" Timestamp="1651730450"/>
+    <Generation Name="IMPLEMENTATION" State="GENERATED" Timestamp="1651730450"/>
+    <Generation Name="SIMULATION" State="GENERATED" Timestamp="1651730450"/>
+    <Generation Name="HW_HANDOFF" State="GENERATED" Timestamp="1651730450"/>
     <FileCollection Name="SOURCES" Type="SOURCES">
       <File Name="ip/ann_sandbox_sinetest_0_0/ann_sandbox_sinetest_0_0.xci" Type="IP">
         <Instance HierarchyPath="sinetest_0"/>
@@ -23,14 +23,6 @@
       <File Name="sim/ann_sandbox.vhd" Type="VHDL">
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
         <Library Name="xil_defaultlib"/>
-        <UsedIn Val="SIMULATION"/>
-      </File>
-      <File Name="ip/ann_sandbox_ila_0_0/ann_sandbox_ila_0_0.xci" Type="IP">
-        <Instance HierarchyPath="ila_0"/>
-        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
-        <Library Name="xil_defaultlib"/>
-        <UsedIn Val="SYNTHESIS"/>
-        <UsedIn Val="IMPLEMENTATION"/>
         <UsedIn Val="SIMULATION"/>
       </File>
       <File Name="ann_sandbox_ooc.xdc" Type="XDC">

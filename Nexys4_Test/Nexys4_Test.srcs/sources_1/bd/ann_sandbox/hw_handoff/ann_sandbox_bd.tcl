@@ -176,36 +176,24 @@ proc create_root_design { parentCell } {
   set data_out [ create_bd_port -dir O -from 15 -to 0 -type data data_out ]
   set data_out_valid [ create_bd_port -dir O data_out_valid ]
 
-  # Create instance: ila_0, and set properties
-  set ila_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:ila:6.2 ila_0 ]
-  set_property -dict [ list \
-   CONFIG.C_ENABLE_ILA_AXI_MON {false} \
-   CONFIG.C_MONITOR_TYPE {Native} \
-   CONFIG.C_NUM_OF_PROBES {8} \
-   CONFIG.C_PROBE0_TYPE {1} \
-   CONFIG.C_PROBE0_WIDTH {16} \
-   CONFIG.C_PROBE1_TYPE {1} \
-   CONFIG.C_PROBE1_WIDTH {16} \
- ] $ila_0
-
   # Create instance: sinetest_0, and set properties
   set sinetest_0 [ create_bd_cell -type ip -vlnv JochiSt:SineTest:sinetest:0.1 sinetest_0 ]
 
   # Create port connections
-  connect_bd_net -net ap_clk_0_1 [get_bd_ports CLK100MHZ] [get_bd_pins ila_0/clk] [get_bd_pins sinetest_0/ap_clk]
+  connect_bd_net -net ap_clk_0_1 [get_bd_ports CLK100MHZ] [get_bd_pins sinetest_0/ap_clk]
   connect_bd_net -net ap_rst_0_1 [get_bd_ports ap_rst] [get_bd_pins sinetest_0/ap_rst]
-  connect_bd_net -net ap_start_1 [get_bd_ports ap_start] [get_bd_pins ila_0/probe4] [get_bd_pins sinetest_0/ap_start]
-  connect_bd_net -net input_V_0_1 [get_bd_ports data_in] [get_bd_pins ila_0/probe0] [get_bd_pins sinetest_0/input_V]
-  connect_bd_net -net input_V_ap_vld_0_1 [get_bd_ports data_in_valid] [get_bd_pins ila_0/probe3] [get_bd_pins sinetest_0/input_V_ap_vld]
-  connect_bd_net -net sinetest_0_ap_done [get_bd_ports ap_done] [get_bd_pins ila_0/probe5] [get_bd_pins sinetest_0/ap_done]
-  connect_bd_net -net sinetest_0_ap_idle [get_bd_ports ap_idle] [get_bd_pins ila_0/probe7] [get_bd_pins sinetest_0/ap_idle]
-  connect_bd_net -net sinetest_0_ap_ready [get_bd_ports ap_ready] [get_bd_pins ila_0/probe6] [get_bd_pins sinetest_0/ap_ready]
+  connect_bd_net -net ap_start_1 [get_bd_ports ap_start] [get_bd_pins sinetest_0/ap_start]
+  connect_bd_net -net input_V_0_1 [get_bd_ports data_in] [get_bd_pins sinetest_0/input_V]
+  connect_bd_net -net input_V_ap_vld_0_1 [get_bd_ports data_in_valid] [get_bd_pins sinetest_0/input_V_ap_vld]
+  connect_bd_net -net sinetest_0_ap_done [get_bd_ports ap_done] [get_bd_pins sinetest_0/ap_done]
+  connect_bd_net -net sinetest_0_ap_idle [get_bd_ports ap_idle] [get_bd_pins sinetest_0/ap_idle]
+  connect_bd_net -net sinetest_0_ap_ready [get_bd_ports ap_ready] [get_bd_pins sinetest_0/ap_ready]
   connect_bd_net -net sinetest_0_const_size_in_1 [get_bd_ports const_size_in_1_0] [get_bd_pins sinetest_0/const_size_in_1]
   connect_bd_net -net sinetest_0_const_size_in_1_ap_vld [get_bd_ports const_size_in_1_ap_vld_0] [get_bd_pins sinetest_0/const_size_in_1_ap_vld]
   connect_bd_net -net sinetest_0_const_size_out_1 [get_bd_ports const_size_out_1_0] [get_bd_pins sinetest_0/const_size_out_1]
   connect_bd_net -net sinetest_0_const_size_out_1_ap_vld [get_bd_ports const_size_out_1_ap_vld_0] [get_bd_pins sinetest_0/const_size_out_1_ap_vld]
-  connect_bd_net -net sinetest_0_layer16_out_0_V [get_bd_ports data_out] [get_bd_pins ila_0/probe1] [get_bd_pins sinetest_0/layer16_out_0_V]
-  connect_bd_net -net sinetest_0_layer16_out_0_V_ap_vld [get_bd_ports data_out_valid] [get_bd_pins ila_0/probe2] [get_bd_pins sinetest_0/layer16_out_0_V_ap_vld]
+  connect_bd_net -net sinetest_0_layer16_out_0_V [get_bd_ports data_out] [get_bd_pins sinetest_0/layer16_out_0_V]
+  connect_bd_net -net sinetest_0_layer16_out_0_V_ap_vld [get_bd_ports data_out_valid] [get_bd_pins sinetest_0/layer16_out_0_V_ap_vld]
 
   # Create address segments
 
