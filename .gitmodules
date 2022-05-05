@@ -4,3 +4,6 @@
 [submodule "SineTest/AI_TF_helpers"]
 	path = SineTest/AI_TF_helpers
 	url = https://github.com/JochiSt/AI_TF_helpers.git
+[submodule "SineTest/FPGA_evaluation/PYNQ-ap_fixed-converter"]
+	path = SineTest/FPGA_evaluation/PYNQ-ap_fixed-converter
+	url = https://github.com/mattiasu96/PYNQ-ap_fixed-converter.git

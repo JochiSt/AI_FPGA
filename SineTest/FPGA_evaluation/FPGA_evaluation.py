@@ -7,6 +7,10 @@ from fxpmath import Fxp
 import serial
 import time
 
+import sys
+sys.path.append("PYNQ-ap_fixed-converter")
+from converter import Converter
+
 def FPGA_evaluation(tty="/dev/ttyUSB1"):
     serial_port = None
     
@@ -39,6 +43,7 @@ def FPGA_evaluation(tty="/dev/ttyUSB1"):
     serial_port.write(str.encode("r"))
 	
     TEST_SIZE = 10
+    
     for i in range(TEST_SIZE):
         try:
             serial_port.write(str.encode("1"))
@@ -58,5 +63,15 @@ def FPGA_evaluation(tty="/dev/ttyUSB1"):
     # put ANN into reset
     serial_port.write(str.encode("r"))
 
+def testConverter():
+    converter = Converter()
+
+    uint_result = converter.forward_conversion(input_data=0.7, signed=False, total_bits=4, fractional_bits=3)
+    print('Forward converted input:',uint_result)
+
+    fractional_result = converter.backward_conversion(input_data=uint_result, total_bits=4, fractional_bits=3)
+    print('Backward converted input', fractional_result)
+
 if __name__ == "__main__":
-    FPGA_evaluation()
+    #FPGA_evaluation()
+    testConverter()
