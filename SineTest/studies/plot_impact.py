@@ -12,7 +12,8 @@ with open('post_quant_train.dat') as f:
             quant, dist, sigma = line.split(';')
             quantisations.append(quant)
             mean_distances  = np.append( mean_distances,  float(dist) )
-            sigma_distances = np.append( sigma_distances, float(dist) )
+            sigma_distances = np.append( sigma_distances, float(sigma) )
+
         except:
             pass
 
