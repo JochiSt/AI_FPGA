@@ -62,3 +62,6 @@
 !*.elf
 !*.bmm
 !*.xmp
+
+Nexys4_Test.srcs/sources_1/bd/ann_sandbox/ip/
+Nexys4_Test.srcs/sources_1/bd/ann_sandbox/ipshared
