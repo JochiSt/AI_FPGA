@@ -19,7 +19,8 @@ def meanAbsDistance( truth, predict ):
     mean_distance = np.mean(abs_distances)
 
     # sigma is the error on the mean
-    sigma_distance = np.std(abs_distances) / np.sqrt( len(abs_distances) )
+    #sigma_distance = np.std(abs_distances) / np.sqrt( len(abs_distances) )
+    sigma_distance = np.std(abs_distances)
 
     return mean_distance, sigma_distance
 
