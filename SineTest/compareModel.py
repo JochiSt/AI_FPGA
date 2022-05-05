@@ -15,12 +15,13 @@ def meanAbsDistance( truth, predict ):
     """
 
     distances = getDistances( truth, predict )
-
     abs_distances = np.absolute(distances)
-
     mean_distance = np.mean(abs_distances)
 
-    return mean_distance
+    # sigma is the error on the mean
+    sigma_distance = np.std(abs_distances) / np.sqrt( len(abs_distances) )
+
+    return mean_distance, sigma_distance
 
 
 

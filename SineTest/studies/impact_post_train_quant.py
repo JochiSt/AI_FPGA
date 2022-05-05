@@ -44,7 +44,8 @@ def impact_post_train_quant(modelfilename, NSAMPLES=1000):
     x_test, y_test = generate_data(NSAMPLES)
     y_truth = truth_function( x_test )
 
-    distances = np.array([])
+    mean_distances = np.array([])
+    sigma_distances = np.array([])
 
     fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True, figsize=(4,8))
     fig.suptitle('Comparison of KERAS and HLS4ML')
@@ -59,13 +60,11 @@ def impact_post_train_quant(modelfilename, NSAMPLES=1000):
     y_keras = model.predict( x_test )
     y_keras = y_keras.flatten()
 
+    mad_keras, sigma_keras = meanAbsDistance( y_truth, y_keras )
 
-    mad_keras = meanAbsDistance( y_truth, y_keras )
-
-    ax1.plot(x_test, y_keras, '.', label='Keras', markersize=5)
+    ax1.plot( x_test, y_keras, '.', label='Keras', markersize=5)
     ax2.plot( x_test, getDistances(y_truth, y_keras), '.', label="Keras",
                                                                 markersize=5 )
-
     del model
 
     for quant in quantisations:
@@ -88,11 +87,12 @@ def impact_post_train_quant(modelfilename, NSAMPLES=1000):
 
         ax2.plot( x_test, getDistances(y_truth, y_hls), '.',
                                                 label=quant, markersize=5 )
-
-        distances = np.append( distances, meanAbsDistance( y_truth, y_hls ) )
+        mean, sigma = meanAbsDistance( y_truth, y_hls )
+        mean_distances = np.append( mean_distances, mean)
+        sigma_distances = np.append( sigma_distances, sigma)
 
     print("KERAS ", mad_keras)
-    print("HLS4ML", distances )
+    print("HLS4ML", mean_distances )
 
     ax1.set_ylabel('y values')
     ax2.set_ylabel('distance')
@@ -107,14 +107,15 @@ def impact_post_train_quant(modelfilename, NSAMPLES=1000):
     ###########################################################################
     # save results to file
     with open('post_quant_train.dat', 'w') as f:
-        f.write('KERAS ; %f\n'%(mad_keras))
+        f.write('KERAS ; %f ; %f\n'%(mad_keras, sigma_keras))
         for i, quant in enumerate(quantisations):
-            f.write('%s ; %f\n'%(quant,distances[i]))
+            f.write('%s ; %f ; %f\n'%(quant, mean_distances[i],
+                                            sigma_distances[i]))
 
     fig, ax1 = plt.subplots()
 
     x = np.arange(0, len(quantisations))
-    ax1.plot( x, distances, '.-', label='Mean Absolute Distance')
+    ax1.plot( x, mean_distances, '.-', label='Mean Absolute Distance')
 
     # plot the comparison to keras
     ax1.axhline(y=mad_keras, color='r', linestyle='-', label="Keras")
