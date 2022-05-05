@@ -2,18 +2,16 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-quantisations = []
-mean_distances = np.array([])
-sigma_distances = np.array([])
+stimulus = np.array([])
+ANN_raw = np.array([])
+
 with open('post_quant_train.dat') as f:
     lines = f.readlines()
     for line in lines:
         try:
-            quant, dist, sigma = line.split(';')
-            quantisations.append(quant)
-            mean_distances  = np.append( mean_distances,  float(dist) )
-            sigma_distances = np.append( sigma_distances, float(sigma) )
-
+            stim, raw = line.split(' ')
+            stimulus  = np.append( stimulus,  float(stim) )
+            ANN_raw = np.append( ANN_raw, int(raw, 16) )
         except:
             pass
 
