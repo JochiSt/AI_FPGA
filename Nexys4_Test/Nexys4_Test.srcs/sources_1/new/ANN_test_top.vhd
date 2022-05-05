@@ -125,7 +125,7 @@ begin
         o_TX_Done   => TX_DONE
     );
     ----------------------------------------------------------------------------
-    
+
     ----------------------------------------------------------------------------
     -- use the block design as a wrapper for the ANN IP core
     ann : entity Work.ANN_sandbox_wrapper
@@ -174,36 +174,47 @@ begin
                     RX_upper_lower <= '0';
                     
                 -- ignore characters, which are needed somewhere else
-                elsif RX_BYTE /= std_logic_vector(to_unsigned(character'pos('r'),8)) and
-                    RX_BYTE /= std_logic_vector(to_unsigned(character'pos('s'),8)) then
+                elsif RX_BYTE /= std_logic_vector(to_unsigned(character'pos('r'),8)) then
                 
                     -- fill 16bit alternating
                     if RX_upper_lower = '0' then
                         RX_16bit( 7 downto 0) <= RX_BYTE;
+                        TX_BYTE <= TX_16bit(7 downto 0);
                     else
                         RX_16bit(15 downto 8) <= RX_BYTE;
+                        TX_BYTE <= TX_16bit(15 downto 8);
                         RX_valid <= '1';
                     end if;
                     
                     RX_upper_lower <= not RX_upper_lower;
                 end if;
             end if;
+            
+            -- we send one byte and receive one byte
+            TX_DV <= RX_DV;
         end if;
     end process receive_16bit;
-    
+        
     -- foward the data to the ANN
     -- own process for possible future extensions
     foward_data_ann : process(CLK100MHZ)
     begin
         if rising_edge(CLK100MHZ) then
+        
             if RX_valid = '1' then
                 ap_data_in <= RX_16bit;
             end if;
             
             ap_data_in_valid <= RX_valid;
+            
+            if ap_rst = '1' then
+                TX_16bit <= (others => '0');
+            elsif ap_data_out_valid = '1' then
+                TX_16bit <= ap_data_out;
+            end if;
+            
         end if;
     end process foward_data_ann;
-    
     
     -- we need some control via the UART to forward some signals to the ANN
     RECEIVE_UART : process (CLK100MHZ)
@@ -242,13 +253,10 @@ begin
     -- -- upper 8 LEDs are ANN output data, just something, not really meaningful
     -- LED(15 downto 8) <= ap_data_out(15 downto 8);
     
-    TX_DV <= ap_done;
-    TX_BYTE <= ap_data_out(15 downto 8);
-    
     LED <= ap_data_out;
     
     RGB1_Red    <= RX_upper_lower;
-    RGB1_Blue   <= ap_data_out_valid;
+    RGB1_Blue   <= TX_upper_lower;
     RGB1_Green  <= ap_rst;
     
     RGB2_Red    <= ap_start;
