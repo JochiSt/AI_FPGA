@@ -94,10 +94,22 @@ architecture Behavioral of ANN_test_top is
     signal TX_valid             : std_logic := '0';
     signal TX_16bit             : std_logic_vector(15 downto 0):=(others =>'0');
     ----------------------------------------------------------------------------
-    -- configuration of the ANN
-    type T_ANN_STATE is (RESET, RUNNING, IDLE);
-    signal ANN_STATE : T_ANN_STATE := RESET;
-begin    
+    
+    signal CLK_20MHZ            : std_logic := '0';
+    signal CLK_40MHZ            : std_logic := '0';
+    signal CLK_locked           : std_logic := '0';
+    signal CLK_rst              : std_logic := '1';
+begin  
+
+    clk_handling : entity Work.CLK_handling_wrapper
+    port map(
+        CLK100MHZ => CLK100MHZ,
+        CLK20MHZ => CLK_20MHZ,
+        CLK40MHZ => CLK_40MHZ,
+        locked => CLK_locked,
+        rst => CLK_rst
+    );
+ 
     ----------------------------------------------------------------------------
     -- instantiate RX core
     uartrx : entity Work.UART_RX
@@ -170,26 +182,39 @@ begin
             
             if RX_DV = '1' then
                 if RX_BYTE = std_logic_vector(to_unsigned(character'pos('r'),8)) then
-                    -- reset upper lower variable
+                    -- reset
+                    ap_rst <= not ap_rst;
+                    
+
+                -- set upper / lower part of the 16bit input, which is fed to 
+                -- the ANN
+                elsif RX_BYTE = std_logic_vector(to_unsigned(character'pos('u'),8)) then
+                    RX_upper_lower <= '1';
+                elsif RX_BYTE = std_logic_vector(to_unsigned(character'pos('l'),8)) then
                     RX_upper_lower <= '0';
                     
-                -- ignore characters, which are needed somewhere else
-                elsif RX_BYTE /= std_logic_vector(to_unsigned(character'pos('r'),8)) then
-                
+                elsif RX_BYTE = std_logic_vector(to_unsigned(character'pos('U'),8)) then
+                    TX_BYTE <= TX_16bit(15 downto 8);
+                elsif RX_BYTE = std_logic_vector(to_unsigned(character'pos('L'),8)) then
+                    TX_BYTE <= TX_16bit(7 downto 0);
+
+                elsif RX_BYTE = std_logic_vector(to_unsigned(character'pos('c'),8)) then
+                    TX_16bit <= RX_16bit;
+                    
+                else -- ignore characters, which are needed somewhere else
                     -- fill 16bit alternating
                     if RX_upper_lower = '0' then
                         RX_16bit( 7 downto 0) <= RX_BYTE;
-                        TX_BYTE <= TX_16bit(7 downto 0);
                     else
                         RX_16bit(15 downto 8) <= RX_BYTE;
-                        TX_BYTE <= TX_16bit(15 downto 8);
                         RX_valid <= '1';
                     end if;
-                    
-                    RX_upper_lower <= not RX_upper_lower;
                 end if;
             end if;
             
+            -- ap_start can be just the inverse of ap_rst
+            ap_start <= not ap_rst;
+
             -- we send one byte and receive one byte
             TX_DV <= RX_DV;
         end if;
@@ -207,37 +232,15 @@ begin
             
             ap_data_in_valid <= RX_valid;
             
-            if ap_rst = '1' then
-                TX_16bit <= (others => '0');
-            elsif ap_data_out_valid = '1' then
-                TX_16bit <= ap_data_out;
-            end if;
+            -- if ap_rst = '1' then
+                -- TX_16bit <= (others => '0');
+            -- elsif ap_data_out_valid = '1' then
+                -- TX_16bit <= ap_data_out;
+            -- end if;
             
         end if;
     end process foward_data_ann;
     
-    -- we need some control via the UART to forward some signals to the ANN
-    RECEIVE_UART : process (CLK100MHZ)
-    begin
-        if rising_edge(CLK100MHZ) then
-                           
-            if RX_BYTE = std_logic_vector(to_unsigned(character'pos('r'),8)) then
-                if RX_DV = '1' then
-                    if ap_rst = '1' then
-                        ap_rst <= '0';
-                        ANN_STATE <= RUNNING;
-                    else
-                        ap_rst <= '1';
-                        ANN_STATE <= RESET;
-                    end if;
-                end if;
-            end if;
-            
-            ap_start <= not ap_rst;
-            
-        end if;
-    end process RECEIVE_UART;
-
     ---------------------------------------------------------------------------
     -- connections to the LEDs
     -- normal operation
@@ -253,7 +256,8 @@ begin
     -- -- upper 8 LEDs are ANN output data, just something, not really meaningful
     -- LED(15 downto 8) <= ap_data_out(15 downto 8);
     
-    LED <= ap_data_out;
+    --LED <= ap_data_out;
+    LED <= TX_16bit;
     
     RGB1_Red    <= RX_upper_lower;
     RGB1_Blue   <= TX_upper_lower;

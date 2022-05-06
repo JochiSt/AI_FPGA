@@ -1,0 +1,9 @@
+{
+	"version": "1.0",
+	"modules": {
+		"CLK_handling": {
+			"proto_instances": {
+			}
+		}
+	}
+}
