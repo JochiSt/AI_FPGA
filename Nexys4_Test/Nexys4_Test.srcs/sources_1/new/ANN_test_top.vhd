@@ -181,10 +181,11 @@ begin
             end if;
             
             if RX_DV = '1' then
+                -- reset
                 if RX_BYTE = std_logic_vector(to_unsigned(character'pos('r'),8)) then
-                    -- reset
-                    ap_rst <= not ap_rst;
-                    
+                    ap_rst <= '0';
+                elsif RX_BYTE = std_logic_vector(to_unsigned(character'pos('R'),8)) then
+                    ap_rst <= '1';
 
                 -- set upper / lower part of the 16bit input, which is fed to 
                 -- the ANN
@@ -192,12 +193,14 @@ begin
                     RX_upper_lower <= '1';
                 elsif RX_BYTE = std_logic_vector(to_unsigned(character'pos('l'),8)) then
                     RX_upper_lower <= '0';
-                    
+                
+                -- get the result of the ANN
                 elsif RX_BYTE = std_logic_vector(to_unsigned(character'pos('U'),8)) then
                     TX_BYTE <= TX_16bit(15 downto 8);
                 elsif RX_BYTE = std_logic_vector(to_unsigned(character'pos('L'),8)) then
                     TX_BYTE <= TX_16bit(7 downto 0);
 
+                -- trigger the computation of the ANN
                 elsif RX_BYTE = std_logic_vector(to_unsigned(character'pos('c'),8)) then
                     TX_16bit <= RX_16bit;
                     
