@@ -55,7 +55,11 @@ def FPGA_evaluation(tty="/dev/ttyUSB1"):
     ANN_stimul = np.array([])
     ANN_return = np.array([])
     
-    TEST_SIZE = 9
+    # make an array of the forbidden bytes
+    forbidden_bytes = bytes("ULulRrCc", 'ascii')
+    
+    TEST_SIZE = 1000
+    #_ = input("Starting Test?")
     for i in range(TEST_SIZE):
         stim = np.random.rand() * 2*np.pi
         
@@ -71,34 +75,45 @@ def FPGA_evaluation(tty="/dev/ttyUSB1"):
         
         try:
             byte_stim = int_stim.to_bytes(2, 'little')
+            
+            # test data for debugging
             #byte_stim = int(65518).to_bytes(2, 'little')
             print("\tANN byte stim U %x L %x"%(byte_stim[1], byte_stim[0]))
                        
-            
             serial_port.write(str.encode('l'))
             serial_port.flush()
             
             send_data = "%02X"%(byte_stim[0])
-            #serial_port.write(str.encode("%X"%(byte_stim[0])))
-            serial_port.write(bytes.fromhex(send_data))
+            send_byte = bytes.fromhex(send_data)
+            if send_byte in forbidden_bytes:
+                print("forbidden byte found -> continue")
+                print(send_byte)
+                continue
+                
+            serial_port.write(send_byte)
             serial_port.flush()
             
             serial_port.write(str.encode('u'))
             serial_port.flush()
+            
             send_data = "%02X"%(byte_stim[1])
-            #serial_port.write(str.encode("%X"%(byte_stim[1])))
-            serial_port.write(bytes.fromhex(send_data))
+            send_byte = bytes.fromhex(send_data)            
+            if send_byte in forbidden_bytes:
+                print("forbidden byte found -> continue")
+                print(send_byte)
+                continue
+            serial_port.write(send_byte)
             serial_port.flush()
             
             # trigger computation
             serial_port.write(str.encode('c'))
             serial_port.flush()
             
-            test = input("waiting for input ...")
-            #serial_port.write(str.encode('l%du%dc'%(i,i+1)))
-            #serial_port.flush()
-            
+            #test = input("waiting for input ...")
+
+            # give the ANN some time to compute the result
             time.sleep(0.2)
+
             # ignore previous received bytes
             serial_port.reset_input_buffer()
             
@@ -127,6 +142,7 @@ def FPGA_evaluation(tty="/dev/ttyUSB1"):
             ANN_return = np.append(ANN_return, result)
             
             #time.sleep(0.5)
+            
         except Exception as e:
             print(e)
             serial_port.close()
