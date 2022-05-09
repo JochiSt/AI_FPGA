@@ -30,7 +30,7 @@ def generate_data(NSAMPLES):
 
     return x_values, y_values
 
-def create_model(name="sine_v0.1", quantized=False):
+def create_model(name="sine_v0.2", quantized=False):
     """
         Simple Network which approximates a sine
 
@@ -63,19 +63,7 @@ def create_model(name="sine_v0.1", quantized=False):
         layer_cnt+=1
         x = keras.layers.Activation("relu")(x)
 
-        x = keras.layers.BatchNormalization()(x)
-        x = keras.layers.Dense(8,
-                                name="layer_%d"%(layer_cnt))(x)
-        layer_cnt+=1
-        x = keras.layers.Activation("relu")(x)
-
-        x = keras.layers.BatchNormalization()(x)
-        x = keras.layers.Dense(8,
-                                name="layer_%d"%(layer_cnt))(x)
-        layer_cnt+=1
-        x = keras.layers.Activation("relu")(x)
-
-        x = keras.layers.Dense(8,
+        x = keras.layers.Dense(16,
                                 name="layer_%d"%(layer_cnt))(x)
         layer_cnt+=1
         x = keras.layers.Activation("relu")(x)
