@@ -204,9 +204,11 @@ begin
                 -- get the result of the ANN
                 elsif RX_BYTE = std_logic_vector(to_unsigned(character'pos('U'),8)) then
                     TX_BYTE <= TX_16bit(15 downto 8);
+                    TX_DV <= '1';
                 elsif RX_BYTE = std_logic_vector(to_unsigned(character'pos('L'),8)) then
                     TX_BYTE <= TX_16bit(7 downto 0);
-
+                    TX_DV <= '1';
+                    
                 -- trigger the computation of the ANN
                 elsif RX_BYTE = std_logic_vector(to_unsigned(character'pos('c'),8)) then
                     TX_16bit <= RX_16bit;
