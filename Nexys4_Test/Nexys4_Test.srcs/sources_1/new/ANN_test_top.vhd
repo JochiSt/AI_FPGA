@@ -243,13 +243,7 @@ begin
             end if;
             
             ap_data_in_valid <= RX_valid;
-            
-            -- if ap_rst = '1' then
-                -- TX_16bit <= (others => '0');
-            -- elsif ap_data_out_valid = '1' then
-                -- TX_16bit <= ap_data_out;
-            -- end if;
-            
+                        
         end if;
     end process foward_data_ann;
     
