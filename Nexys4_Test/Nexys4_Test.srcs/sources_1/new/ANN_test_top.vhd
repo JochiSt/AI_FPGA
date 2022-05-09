@@ -180,6 +180,13 @@ begin
                 RX_valid <= '0';
             end if;
             
+            -- we send one byte and receive one byte
+            if TX_DONE = '1' then
+                if TX_DV = '1' then
+                    TX_DV <= '0';
+                end if;
+            end if;
+            
             if RX_DV = '1' then
                 -- reset
                 if RX_BYTE = std_logic_vector(to_unsigned(character'pos('r'),8)) then
