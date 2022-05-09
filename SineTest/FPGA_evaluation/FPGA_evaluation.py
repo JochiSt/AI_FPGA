@@ -17,11 +17,12 @@ def FPGA_evaluation(tty="/dev/ttyUSB1"):
     try:
         # open serial port
         serial_port = serial.Serial(tty,
-							baudrate= 115200,
-							bytesize = serial.EIGHTBITS,
-							parity = serial.PARITY_NONE,
-							stopbits = serial.STOPBITS_ONE,
-                            timeout = 2)
+            baudrate= 115200,
+            bytesize = serial.EIGHTBITS,
+            parity = serial.PARITY_NONE,
+            stopbits = serial.STOPBITS_ONE,
+            timeout = 2
+            )
     except Exception as e:
         print(e)
         serial_port.close()
@@ -42,68 +43,103 @@ def FPGA_evaluation(tty="/dev/ttyUSB1"):
     # some debug info
     print("connected to AI test")
 	
-    # get ANN from reset
-    serial_port.write(str.encode("r"))
+    # put ANN into RESET
+    print("resetting ANN ...")
+    serial_port.write(str.encode('R'))
+    time.sleep(1)
+    # get ANN from RESET
+    serial_port.write(str.encode('r'))
+    time.sleep(1)
+    print("... done")
 	
     ANN_stimul = np.array([])
     ANN_return = np.array([])
     
-    TEST_SIZE = 10
+    TEST_SIZE = 9
     for i in range(TEST_SIZE):
         stim = np.random.rand() * 2*np.pi
-        ANN_stimul = np.append(ANN_stimul, stim)
         
         uint_stim = converter.forward_conversion(input_data=stim, 
-                                    signed=True, total_bits=16, fractional_bits=10)
+                                    signed=True, 
+                                    total_bits=16, 
+                                    fractional_bits=10)
                                 
         
         #uint_stim = 0x3132
         int_stim = int(uint_stim)
         print("Simulus %f %d %X"%(stim, uint_stim, int_stim))
-        """
+        
         try:
-            byte_stim = uint_stim.to_bytes(2, 'big')
-            print("%x %x"%(byte_stim[0], byte_stim[1]))
+            byte_stim = int_stim.to_bytes(2, 'little')
+            #byte_stim = int(65518).to_bytes(2, 'little')
+            print("\tANN byte stim U %x L %x"%(byte_stim[1], byte_stim[0]))
+                       
             
-            serial_port.write(byte_stim[0])
-            time.sleep(0.1)
-            raw1 = serial_port.read( size=1 )
-            print(raw1)
+            serial_port.write(str.encode('l'))
+            serial_port.flush()
+            
+            send_data = "%02X"%(byte_stim[0])
+            #serial_port.write(str.encode("%X"%(byte_stim[0])))
+            serial_port.write(bytes.fromhex(send_data))
+            serial_port.flush()
+            
+            serial_port.write(str.encode('u'))
+            serial_port.flush()
+            send_data = "%02X"%(byte_stim[1])
+            #serial_port.write(str.encode("%X"%(byte_stim[1])))
+            serial_port.write(bytes.fromhex(send_data))
+            serial_port.flush()
+            
+            # trigger computation
+            serial_port.write(str.encode('c'))
+            serial_port.flush()
+            
+            test = input("waiting for input ...")
+            #serial_port.write(str.encode('l%du%dc'%(i,i+1)))
+            #serial_port.flush()
             
             time.sleep(0.2)
+            # ignore previous received bytes
+            serial_port.reset_input_buffer()
             
-            serial_port.write(byte_stim[1])
-            time.sleep(0.1)
-            raw2 = serial_port.read( size=1 )
-            print(raw2)
+            # readout results
+            serial_port.write(str.encode('U'))
+            serial_port.flush()
+            rawU = serial_port.read( size=1 )
             
-            if i > 0:
-                raw1 = int.from_bytes(raw1, "big")
-                raw2 = int.from_bytes(raw2, "big")
-                
-                raw = (raw2 << 8) + raw1
-
-                print("ANN %x %x = %X" %(raw1, raw2, raw) )
-                
-                result = converter.backward_conversion(input_data=raw, 
-                                    total_bits=16, fractional_bits=10)[0]
+            serial_port.write(str.encode('L'))
+            serial_port.flush()
+            rawL = serial_port.read( size=1 )
+            
+            rawU = int.from_bytes(rawU, "big")
+            rawL = int.from_bytes(rawL, "big")
                         
-                ANN_return = np.append(ANN_return, result)
+            raw = (rawU << 8) + rawL
+            print("ANN U %x L %x = %X" %(rawU, rawL, raw) )
             
-            time.sleep(0.5)
+            result = converter.backward_conversion(input_data=raw, 
+                                total_bits=16, 
+                                fractional_bits=10)[0]
+
+            print("\tANN float %f"%(result))
+            # store stimulus and result in array
+            ANN_stimul = np.append(ANN_stimul, stim)
+            ANN_return = np.append(ANN_return, result)
+            
+            #time.sleep(0.5)
         except Exception as e:
             print(e)
             serial_port.close()
             break
-        """
+        
     # put ANN into reset
-    serial_port.write(str.encode("r"))
+    serial_port.write(str.encode('R'))
     serial_port.close()
     
     plt.title("ANN output")
     plt.ylabel("ANN output")
     plt.xlabel("ANN stimulus")
-    plt.scatter( ANN_stimul[:-1], ANN_return )
+    plt.scatter( ANN_stimul, ANN_return )
     plt.savefig("FPGA_evaluation.png")
     plt.show()
 
