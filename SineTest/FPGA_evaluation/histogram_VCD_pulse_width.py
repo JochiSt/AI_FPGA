@@ -100,6 +100,9 @@ def analyse_pulse_width(vcd_files):
                         si_format(std_freq,  precision=3) ), 
                         ha='left', va='center', transform=ax.transAxes )
 
+
+    plt.yscale('log')
+
     plt.title("ANN runtime on FPGA")
     plt.ylabel("entries")
     plt.xlabel("ANN execution time / us")
