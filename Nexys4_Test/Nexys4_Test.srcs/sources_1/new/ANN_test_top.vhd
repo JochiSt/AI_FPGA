@@ -229,9 +229,6 @@ begin
             
             -- ap_start can be just the inverse of ap_rst
             ap_start <= not ap_rst;
-
-            -- we send one byte and receive one byte
-            TX_DV <= RX_DV;
         end if;
     end process receive_16bit;
         
