@@ -262,8 +262,8 @@ begin
     -- -- upper 8 LEDs are ANN output data, just something, not really meaningful
     -- LED(15 downto 8) <= ap_data_out(15 downto 8);
     
-    --LED <= ap_data_out;
-    LED <= TX_16bit;
+    LED <= ap_data_out;
+    --LED <= TX_16bit;
     
     RGB1_Red    <= RX_upper_lower;
     RGB1_Blue   <= TX_upper_lower;
