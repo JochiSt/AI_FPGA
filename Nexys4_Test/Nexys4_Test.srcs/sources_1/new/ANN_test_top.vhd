@@ -28,10 +28,14 @@ use IEEE.NUMERIC_STD.ALL; -- support for signed / unsigned values
 --use UNISIM.VComponents.all;
 
 entity ANN_test_top is
-    Port ( CLK100MHZ : in STD_LOGIC;
-    
+    Port ( 
+           -- 100 MHz clock
+           CLK100MHZ : in STD_LOGIC;
+           
+           -- 16 LEDs
            LED       : out std_logic_vector(15 downto 0);
            
+           -- two RGB LEDs
            RGB1_Red  : out std_logic;
            RGB1_Green: out std_logic;
            RGB1_Blue : out std_logic;
@@ -40,8 +44,14 @@ entity ANN_test_top is
            RGB2_Green: out std_logic;
            RGB2_Blue : out std_logic;
            
+           -- PMOD connector JA
+           JA        : out std_logic_vector(1 downto 0);
+           
+           -- USB UART connection
            RsRx      : in STD_LOGIC;
-           RsTx      : out STD_LOGIC);
+           RsTx      : out STD_LOGIC
+           
+          );
 end ANN_test_top;
 
 architecture Behavioral of ANN_test_top is
@@ -54,6 +64,7 @@ architecture Behavioral of ANN_test_top is
     signal TX_BYTE              : std_logic_vector(7 downto 0) := (others=>'0');
     signal TX_ACTIVE            : std_logic := '0';
     signal TX_DONE              : std_logic := '0';
+    
     ----------------------------------------------------------------------------
     -- number clock samples per second
     constant CLKPS              : integer := 100000000; -- 100 MHz
@@ -63,6 +74,7 @@ architecture Behavioral of ANN_test_top is
     -- g_CLKS_PER_BIT = (Frequency of i_Clk)/(Frequency of UART)
     -- Example: 25 MHz Clock, 115200 baud UART = (25000000)/(115200) = 217
     constant CLKS_PER_BIT       : integer := CLKPS / BAUDRATE;
+    
     ----------------------------------------------------------------------------
     -- Signals for ANN control / status
     signal ap_done              : STD_LOGIC;    -- DONE
@@ -71,6 +83,7 @@ architecture Behavioral of ANN_test_top is
         
     signal ap_rst               : STD_LOGIC := '1';    -- RESET
     signal ap_start             : STD_LOGIC := '0';    -- START
+    
     ----------------------------------------------------------------------------
     -- Signals for ANN Data IN and OUT
     signal ap_data_in           : STD_LOGIC_VECTOR(15 downto 0);
@@ -84,6 +97,7 @@ architecture Behavioral of ANN_test_top is
     signal const_size_in_1_ap_vld_0  : STD_LOGIC;
     signal const_size_out_1_0        : STD_LOGIC_VECTOR (15 downto 0);
     signal const_size_out_1_ap_vld_0 : STD_LOGIC;
+    
     ----------------------------------------------------------------------------
     -- merge 2x 8 bit of the UART RX into 1x 16 bit for the ANN
     signal RX_upper_lower       : std_logic := '0';
@@ -93,12 +107,18 @@ architecture Behavioral of ANN_test_top is
     signal TX_upper_lower       : std_logic := '0';
     signal TX_valid             : std_logic := '0';
     signal TX_16bit             : std_logic_vector(15 downto 0):=(others =>'0');
+
     ----------------------------------------------------------------------------
+    -- SIGNALS to measure the timing of the ANN
+    signal ANN_busy             : std_logic := '0';
     
+    ----------------------------------------------------------------------------
+    -- internal clock signals
     signal CLK_20MHZ            : std_logic := '0';
     signal CLK_40MHZ            : std_logic := '0';
     signal CLK_locked           : std_logic := '0';
     signal CLK_rst              : std_logic := '1';
+    
 begin  
 
     clk_handling : entity Work.CLK_handling_wrapper
@@ -241,9 +261,17 @@ begin
             if RX_valid = '1' then
                 ap_data_in <= RX_16bit;
             end if;
-            
             ap_data_in_valid <= RX_valid;
-                        
+            
+            -- toggle the signal ANN_busy when we forward valid data to the ANN
+            -- and when the ANN forwards the data to us
+            if ap_data_in_valid = '1' then
+                ANN_busy <= not ANN_busy;
+            end if;
+            if ap_data_out_valid = '1' then
+                ANN_busy <= not ANN_busy;
+            end if;
+            
         end if;
     end process foward_data_ann;
     
@@ -265,11 +293,13 @@ begin
     LED <= ap_data_out;
     --LED <= TX_16bit;
     
-    RGB1_Red    <= RX_upper_lower;
-    RGB1_Blue   <= TX_upper_lower;
+    JA(0) <= ANN_busy;
+    
+    RGB1_Red    <= ANN_busy; -- RX_upper_lower;
+    RGB1_Blue   <= '0'; -- TX_upper_lower;
     RGB1_Green  <= ap_rst;
     
-    RGB2_Red    <= ap_start;
+    RGB2_Red    <= '0'; -- ap_start;
     RGB2_Blue   <= ap_ready;
     RGB2_Green  <= ap_idle;
         
