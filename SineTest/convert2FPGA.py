@@ -24,8 +24,9 @@ from print_dict import print_dict
 # create basic config
 model_cfg = hls4ml.utils.config_from_keras_model(model, granularity='model')
 model_cfg['Model'] = {}
-model_cfg['Model']['ReuseFactor'] = 2
-model_cfg['Model']['Strategy'] = 'Resource'
+model_cfg['Model']['ReuseFactor'] = 1
+#model_cfg['Model']['Strategy'] = 'Resource'
+model_cfg['Model']['Strategy'] = 'Latency'
 model_cfg['Model']['Precision'] = 'ap_fixed<16,6>'
 model_cfg['Model']['Precision'] = 'ap_fixed<16,6>'
 
@@ -38,7 +39,8 @@ cfg['HLSConfig'] = model_cfg
 cfg['KerasModel'] = model
 cfg['OutputDir'] = 'sinetest'
 cfg['ProjectName'] = 'sinetest'
-cfg['ClockPeriod'] = 10                 # 10 ns => 100MHz
+#cfg['ClockPeriod'] = 10                 # 10 ns => 100MHz
+cfg['ClockPeriod'] = 4                 # 4 ns => 125MHz
 
 print("-----------------------------------")
 print("Configuration")
