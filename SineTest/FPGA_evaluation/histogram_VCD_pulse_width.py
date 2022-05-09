@@ -112,8 +112,16 @@ def analyse_pulse_width(vcd_files):
 
 
 if __name__ == "__main__":
+    """
     analyse_pulse_width([
-        "timing_1.vcd", 
+        "timing_1.vcd",
         "timing_2.vcd",
         "timing_3.vcd",
+        ])
+    """
+
+    analyse_pulse_width([
+        "timing_v0.2_1.vcd",
+        "timing_v0.2_2.vcd",
+        "timing_v0.2_3.vcd",
         ])
