@@ -54,6 +54,7 @@ def FPGA_evaluation(tty="/dev/ttyUSB1"):
 	
     ANN_stimul = np.array([])
     ANN_return = np.array([])
+    ANN_return_float = np.array([])
     
     # make an array of the forbidden bytes
     forbidden_bytes = bytes("ULulRrCc", 'ascii')
@@ -86,8 +87,7 @@ def FPGA_evaluation(tty="/dev/ttyUSB1"):
             send_data = "%02X"%(byte_stim[0])
             send_byte = bytes.fromhex(send_data)
             if send_byte in forbidden_bytes:
-                print("forbidden byte found -> continue")
-                print(send_byte)
+                print("forbidden byte", send_byte, "found -> continue")
                 continue
                 
             serial_port.write(send_byte)
@@ -99,8 +99,7 @@ def FPGA_evaluation(tty="/dev/ttyUSB1"):
             send_data = "%02X"%(byte_stim[1])
             send_byte = bytes.fromhex(send_data)            
             if send_byte in forbidden_bytes:
-                print("forbidden byte found -> continue")
-                print(send_byte)
+                print("forbidden byte", send_byte, "found -> continue")
                 continue
             serial_port.write(send_byte)
             serial_port.flush()
@@ -108,11 +107,8 @@ def FPGA_evaluation(tty="/dev/ttyUSB1"):
             # trigger computation
             serial_port.write(str.encode('c'))
             serial_port.flush()
-            
-            #test = input("waiting for input ...")
 
-            # give the ANN some time to compute the result
-            time.sleep(0.2)
+            # READOUT the data computed by the ANN
 
             # ignore previous received bytes
             serial_port.reset_input_buffer()
@@ -139,8 +135,8 @@ def FPGA_evaluation(tty="/dev/ttyUSB1"):
             print("\tANN float %f"%(result))
             # store stimulus and result in array
             ANN_stimul = np.append(ANN_stimul, stim)
-            ANN_return = np.append(ANN_return, result)
-            
+            ANN_return = np.append(ANN_return, raw)
+            ANN_return_float = np.append(ANN_return_float, result)
             #time.sleep(0.5)
             
         except Exception as e:
@@ -152,10 +148,16 @@ def FPGA_evaluation(tty="/dev/ttyUSB1"):
     serial_port.write(str.encode('R'))
     serial_port.close()
     
+    np.savez("FPGA_evaluation_%s.npz"%(time.strftime("%Y%m%d_%H%M%S")),
+             ANN_stimul = ANN_stimul,
+             ANN_return = ANN_return,
+             ANN_return_float = ANN_return_float
+             )
+
     plt.title("ANN output")
     plt.ylabel("ANN output")
     plt.xlabel("ANN stimulus")
-    plt.scatter( ANN_stimul, ANN_return )
+    plt.scatter( ANN_stimul, ANN_return_float)
     plt.savefig("FPGA_evaluation.png")
     plt.show()
 
