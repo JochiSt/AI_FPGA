@@ -59,7 +59,7 @@ def FPGA_evaluation(tty="/dev/ttyUSB1"):
     # make an array of the forbidden bytes
     forbidden_bytes = bytes("ULulRrCc", 'ascii')
     
-    TEST_SIZE = 1000
+    TEST_SIZE = 10000
     #_ = input("Starting Test?")
     for i in range(TEST_SIZE):
         stim = np.random.rand() * 2*np.pi
@@ -82,7 +82,6 @@ def FPGA_evaluation(tty="/dev/ttyUSB1"):
             print("\tANN byte stim U %x L %x"%(byte_stim[1], byte_stim[0]))
                        
             serial_port.write(str.encode('l'))
-            serial_port.flush()
             
             send_data = "%02X"%(byte_stim[0])
             send_byte = bytes.fromhex(send_data)
@@ -91,10 +90,8 @@ def FPGA_evaluation(tty="/dev/ttyUSB1"):
                 continue
                 
             serial_port.write(send_byte)
-            serial_port.flush()
             
             serial_port.write(str.encode('u'))
-            serial_port.flush()
             
             send_data = "%02X"%(byte_stim[1])
             send_byte = bytes.fromhex(send_data)            
@@ -102,11 +99,9 @@ def FPGA_evaluation(tty="/dev/ttyUSB1"):
                 print("forbidden byte", send_byte, "found -> continue")
                 continue
             serial_port.write(send_byte)
-            serial_port.flush()
             
             # trigger computation
             serial_port.write(str.encode('c'))
-            serial_port.flush()
 
             # READOUT the data computed by the ANN
 
@@ -115,11 +110,9 @@ def FPGA_evaluation(tty="/dev/ttyUSB1"):
             
             # readout results
             serial_port.write(str.encode('U'))
-            serial_port.flush()
             rawU = serial_port.read( size=1 )
             
             serial_port.write(str.encode('L'))
-            serial_port.flush()
             rawL = serial_port.read( size=1 )
             
             rawU = int.from_bytes(rawU, "big")
@@ -137,7 +130,6 @@ def FPGA_evaluation(tty="/dev/ttyUSB1"):
             ANN_stimul = np.append(ANN_stimul, stim)
             ANN_return = np.append(ANN_return, raw)
             ANN_return_float = np.append(ANN_return_float, result)
-            #time.sleep(0.5)
             
         except Exception as e:
             print(e)
