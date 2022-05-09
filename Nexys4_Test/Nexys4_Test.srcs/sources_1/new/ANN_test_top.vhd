@@ -211,7 +211,10 @@ begin
                     
                 -- trigger the computation of the ANN
                 elsif RX_BYTE = std_logic_vector(to_unsigned(character'pos('c'),8)) then
-                    TX_16bit <= RX_16bit;
+                    TX_16bit <= ap_data_out;
+                    
+                elsif RX_BYTE = std_logic_vector(to_unsigned(character'pos('C'),8)) then
+                    TX_16bit <= RX_16bit;  -- simple feed through just for debug
                     
                 else -- ignore characters, which are needed somewhere else
                     -- fill 16bit alternating
