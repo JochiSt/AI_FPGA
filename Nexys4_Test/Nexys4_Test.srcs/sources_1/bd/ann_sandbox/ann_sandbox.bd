@@ -64,7 +64,7 @@
         "parameters": {
           "LAYERED_METADATA": {
             "value": "undef",
-            "value_src": "default"
+            "value_src": "const_prop"
           }
         }
       },
@@ -79,7 +79,7 @@
         "parameters": {
           "LAYERED_METADATA": {
             "value": "undef",
-            "value_src": "default"
+            "value_src": "const_prop"
           }
         }
       },
@@ -109,7 +109,7 @@
         "parameters": {
           "LAYERED_METADATA": {
             "value": "undef",
-            "value_src": "default"
+            "value_src": "const_prop"
           }
         }
       },
@@ -186,13 +186,13 @@
       },
       "sinetest_0_layer16_out_0_V": {
         "ports": [
-          "sinetest_0/layer16_out_0_V",
+          "sinetest_0/layer8_out_0_V",
           "data_out"
         ]
       },
       "sinetest_0_layer16_out_0_V_ap_vld": {
         "ports": [
-          "sinetest_0/layer16_out_0_V_ap_vld",
+          "sinetest_0/layer8_out_0_V_ap_vld",
           "data_out_valid"
         ]
       },

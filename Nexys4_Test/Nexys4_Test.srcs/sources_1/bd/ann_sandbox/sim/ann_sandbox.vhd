@@ -1,7 +1,7 @@
 --Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2020.1 (lin64) Build 2902540 Wed May 27 19:54:35 MDT 2020
---Date        : Thu May  5 08:00:49 2022
+--Date        : Mon May  9 17:09:16 2022
 --Host        : einstein running 64-bit Ubuntu 20.04.4 LTS
 --Command     : generate_target ann_sandbox.bd
 --Design      : ann_sandbox
@@ -38,19 +38,19 @@ architecture STRUCTURE of ann_sandbox is
   component ann_sandbox_sinetest_0_0 is
   port (
     input_V_ap_vld : in STD_LOGIC;
+    layer8_out_0_V_ap_vld : out STD_LOGIC;
     const_size_in_1_ap_vld : out STD_LOGIC;
     const_size_out_1_ap_vld : out STD_LOGIC;
-    layer16_out_0_V_ap_vld : out STD_LOGIC;
-    input_V : in STD_LOGIC_VECTOR ( 15 downto 0 );
-    layer16_out_0_V : out STD_LOGIC_VECTOR ( 15 downto 0 );
-    const_size_in_1 : out STD_LOGIC_VECTOR ( 15 downto 0 );
-    const_size_out_1 : out STD_LOGIC_VECTOR ( 15 downto 0 );
     ap_clk : in STD_LOGIC;
     ap_rst : in STD_LOGIC;
     ap_start : in STD_LOGIC;
     ap_done : out STD_LOGIC;
+    ap_idle : out STD_LOGIC;
     ap_ready : out STD_LOGIC;
-    ap_idle : out STD_LOGIC
+    input_V : in STD_LOGIC_VECTOR ( 15 downto 0 );
+    layer8_out_0_V : out STD_LOGIC_VECTOR ( 15 downto 0 );
+    const_size_in_1 : out STD_LOGIC_VECTOR ( 15 downto 0 );
+    const_size_out_1 : out STD_LOGIC_VECTOR ( 15 downto 0 )
   );
   end component ann_sandbox_sinetest_0_0;
   signal ap_clk_0_1 : STD_LOGIC;
@@ -110,7 +110,7 @@ sinetest_0: component ann_sandbox_sinetest_0_0
       const_size_out_1_ap_vld => sinetest_0_const_size_out_1_ap_vld,
       input_V(15 downto 0) => input_V_0_1(15 downto 0),
       input_V_ap_vld => input_V_ap_vld_0_1,
-      layer16_out_0_V(15 downto 0) => sinetest_0_layer16_out_0_V(15 downto 0),
-      layer16_out_0_V_ap_vld => sinetest_0_layer16_out_0_V_ap_vld
+      layer8_out_0_V(15 downto 0) => sinetest_0_layer16_out_0_V(15 downto 0),
+      layer8_out_0_V_ap_vld => sinetest_0_layer16_out_0_V_ap_vld
     );
 end STRUCTURE;

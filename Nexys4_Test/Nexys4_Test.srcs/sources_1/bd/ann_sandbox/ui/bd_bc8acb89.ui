@@ -1,41 +1,41 @@
 {
    "ActiveEmotionalView":"Default View",
-   "Default View_ScaleFactor":"0.532432",
-   "Default View_TopLeft":"-466,145",
+   "Default View_ScaleFactor":"1.0",
+   "Default View_TopLeft":"-218,-101",
    "ExpandedHierarchyInLayout":"",
    "guistr":"# # String gsaved with Nlview 7.0r4  2019-12-20 bk=1.5203 VDI=41 GEI=36 GUI=JA:9.0 TLS
 #  -string -flagsOSRD
-preplace port CLK100MHZ -pg 1 -lvl 0 -x 0 -y 430 -defaultsOSRD
-preplace port ap_rst -pg 1 -lvl 0 -x 0 -y 450 -defaultsOSRD
-preplace port const_size_in_1_ap_vld_0 -pg 1 -lvl 3 -x 760 -y 320 -defaultsOSRD
-preplace port const_size_out_1_ap_vld_0 -pg 1 -lvl 3 -x 760 -y 340 -defaultsOSRD
-preplace port data_in_valid -pg 1 -lvl 0 -x 0 -y 390 -defaultsOSRD
-preplace port data_out_valid -pg 1 -lvl 3 -x 760 -y 280 -defaultsOSRD
-preplace port ap_start -pg 1 -lvl 0 -x 0 -y 160 -defaultsOSRD
-preplace port ap_done -pg 1 -lvl 0 -x 0 -y 190 -defaultsOSRD -left
-preplace port ap_ready -pg 1 -lvl 0 -x 0 -y 210 -defaultsOSRD -left
-preplace port ap_idle -pg 1 -lvl 0 -x 0 -y 230 -defaultsOSRD -left
-preplace portBus const_size_in_1_0 -pg 1 -lvl 3 -x 760 -y 400 -defaultsOSRD
-preplace portBus const_size_out_1_0 -pg 1 -lvl 3 -x 760 -y 420 -defaultsOSRD
-preplace portBus data_in -pg 1 -lvl 0 -x 0 -y 410 -defaultsOSRD
-preplace portBus data_out -pg 1 -lvl 3 -x 760 -y 300 -defaultsOSRD
-preplace inst sinetest_0 -pg 1 -lvl 1 -x 290 -y 370 -defaultsOSRD
-preplace netloc ap_clk_0_1 1 0 1 N 430
-preplace netloc ap_rst_0_1 1 0 1 N 450
-preplace netloc sinetest_0_const_size_in_1 1 1 2 NJ 400 NJ
-preplace netloc sinetest_0_const_size_in_1_ap_vld 1 1 2 NJ 320 NJ
-preplace netloc sinetest_0_const_size_out_1 1 1 2 NJ 420 NJ
-preplace netloc sinetest_0_const_size_out_1_ap_vld 1 1 2 NJ 340 NJ
-preplace netloc input_V_0_1 1 0 1 N 410
-preplace netloc input_V_ap_vld_0_1 1 0 1 N 390
-preplace netloc sinetest_0_layer16_out_0_V 1 1 2 500 300 NJ
-preplace netloc sinetest_0_layer16_out_0_V_ap_vld 1 1 2 490 280 NJ
-preplace netloc ap_start_1 1 0 1 50 160n
-preplace netloc sinetest_0_ap_done 1 0 1 40 190n
-preplace netloc sinetest_0_ap_ready 1 0 1 30 210n
-preplace netloc sinetest_0_ap_idle 1 0 1 20 230n
-levelinfo -pg 1 0 290 640 760
-pagesize -pg 1 -db -bbox -sgen -150 0 1000 650
+preplace port CLK100MHZ -pg 1 -lvl 0 -x -20 -y 200 -defaultsOSRD
+preplace port ap_rst -pg 1 -lvl 0 -x -20 -y 220 -defaultsOSRD
+preplace port const_size_in_1_ap_vld_0 -pg 1 -lvl 2 -x 460 -y 90 -defaultsOSRD
+preplace port const_size_out_1_ap_vld_0 -pg 1 -lvl 2 -x 460 -y 110 -defaultsOSRD
+preplace port data_in_valid -pg 1 -lvl 0 -x -20 -y 160 -defaultsOSRD
+preplace port data_out_valid -pg 1 -lvl 2 -x 460 -y 130 -defaultsOSRD
+preplace port ap_start -pg 1 -lvl 0 -x -20 -y 80 -defaultsOSRD
+preplace port ap_done -pg 1 -lvl 0 -x -20 -y 100 -defaultsOSRD -left
+preplace port ap_ready -pg 1 -lvl 0 -x -20 -y 120 -defaultsOSRD -left
+preplace port ap_idle -pg 1 -lvl 0 -x -20 -y 140 -defaultsOSRD -left
+preplace portBus const_size_in_1_0 -pg 1 -lvl 2 -x 460 -y 170 -defaultsOSRD
+preplace portBus const_size_out_1_0 -pg 1 -lvl 2 -x 460 -y 190 -defaultsOSRD
+preplace portBus data_in -pg 1 -lvl 0 -x -20 -y 180 -defaultsOSRD
+preplace portBus data_out -pg 1 -lvl 2 -x 460 -y 150 -defaultsOSRD
+preplace inst sinetest_0 -pg 1 -lvl 1 -x 220 -y 140 -defaultsOSRD
+preplace netloc ap_clk_0_1 1 0 1 10J 180n
+preplace netloc ap_rst_0_1 1 0 1 20J 200n
+preplace netloc sinetest_0_const_size_in_1 1 1 1 NJ 170
+preplace netloc sinetest_0_const_size_in_1_ap_vld 1 1 1 430J 90n
+preplace netloc sinetest_0_const_size_out_1 1 1 1 NJ 190
+preplace netloc sinetest_0_const_size_out_1_ap_vld 1 1 1 440J 110n
+preplace netloc input_V_0_1 1 0 1 0J 180n
+preplace netloc input_V_ap_vld_0_1 1 0 1 NJ 160
+preplace netloc sinetest_0_layer16_out_0_V 1 1 1 NJ 150
+preplace netloc sinetest_0_layer16_out_0_V_ap_vld 1 1 1 420J 90n
+preplace netloc ap_start_1 1 0 1 NJ 80
+preplace netloc sinetest_0_ap_done 1 0 1 NJ 100
+preplace netloc sinetest_0_ap_ready 1 0 1 0J 120n
+preplace netloc sinetest_0_ap_idle 1 0 1 20J 120n
+levelinfo -pg 1 -20 220 460
+pagesize -pg 1 -db -bbox -sgen -170 0 700 280
 "
 }
 {

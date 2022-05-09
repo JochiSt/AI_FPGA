@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Thu May  5 08:00:50 2022" VIVADOVERSION="2020.1">
+<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Mon May  9 17:09:17 2022" VIVADOVERSION="2020.1">
 
   <SYSTEMINFO ARCH="artix7" BOARD="digilentinc.com:nexys4:part0:1.1" DEVICE="7a100t" NAME="ann_sandbox" PACKAGE="csg324" SPEEDGRADE="-1"/>
 
@@ -44,14 +44,14 @@
         <CONNECTION INSTANCE="sinetest_0" PORT="input_V_ap_vld"/>
       </CONNECTIONS>
     </PORT>
-    <PORT DIR="O" LEFT="15" NAME="data_out" RIGHT="0" SIGIS="data" SIGNAME="sinetest_0_layer16_out_0_V">
+    <PORT DIR="O" LEFT="15" NAME="data_out" RIGHT="0" SIGIS="data" SIGNAME="sinetest_0_layer8_out_0_V">
       <CONNECTIONS>
-        <CONNECTION INSTANCE="sinetest_0" PORT="layer16_out_0_V"/>
+        <CONNECTION INSTANCE="sinetest_0" PORT="layer8_out_0_V"/>
       </CONNECTIONS>
     </PORT>
-    <PORT DIR="O" NAME="data_out_valid" SIGIS="undef" SIGNAME="sinetest_0_layer16_out_0_V_ap_vld">
+    <PORT DIR="O" NAME="data_out_valid" SIGIS="undef" SIGNAME="sinetest_0_layer8_out_0_V_ap_vld">
       <CONNECTIONS>
-        <CONNECTION INSTANCE="sinetest_0" PORT="layer16_out_0_V_ap_vld"/>
+        <CONNECTION INSTANCE="sinetest_0" PORT="layer8_out_0_V_ap_vld"/>
       </CONNECTIONS>
     </PORT>
     <PORT DIR="I" NAME="ap_start" SIGIS="undef" SIGNAME="External_Ports_ap_start">
@@ -79,21 +79,26 @@
   <EXTERNALINTERFACES/>
 
   <MODULES>
-    <MODULE COREREVISION="2105041452" FULLNAME="/sinetest_0" HWVERSION="0.1" INSTANCE="sinetest_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="sinetest" VLNV="JochiSt:SineTest:sinetest:0.1">
+    <MODULE COREREVISION="2105091659" FULLNAME="/sinetest_0" HWVERSION="0.1" INSTANCE="sinetest_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="sinetest" VLNV="JochiSt:SineTest:sinetest:0.1">
       <DOCUMENTS/>
       <PARAMETERS>
         <PARAMETER NAME="Component_Name" VALUE="ann_sandbox_sinetest_0_0"/>
-        <PARAMETER NAME="clk_period" VALUE="10"/>
+        <PARAMETER NAME="clk_period" VALUE="4"/>
         <PARAMETER NAME="machine" VALUE="64"/>
         <PARAMETER NAME="combinational" VALUE="0"/>
-        <PARAMETER NAME="latency" VALUE="36"/>
-        <PARAMETER NAME="II" VALUE="x"/>
+        <PARAMETER NAME="latency" VALUE="21"/>
+        <PARAMETER NAME="II" VALUE="1"/>
         <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
       </PARAMETERS>
       <PORTS>
         <PORT DIR="I" NAME="input_V_ap_vld" SIGIS="undef" SIGNAME="External_Ports_data_in_valid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="External_Ports" PORT="data_in_valid"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" NAME="layer8_out_0_V_ap_vld" SIGIS="undef" SIGNAME="sinetest_0_layer8_out_0_V_ap_vld">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="External_Ports" PORT="data_out_valid"/>
           </CONNECTIONS>
         </PORT>
         <PORT DIR="O" NAME="const_size_in_1_ap_vld" SIGIS="undef" SIGNAME="sinetest_0_const_size_in_1_ap_vld">
@@ -104,31 +109,6 @@
         <PORT DIR="O" NAME="const_size_out_1_ap_vld" SIGIS="undef" SIGNAME="sinetest_0_const_size_out_1_ap_vld">
           <CONNECTIONS>
             <CONNECTION INSTANCE="External_Ports" PORT="const_size_out_1_ap_vld_0"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="O" NAME="layer16_out_0_V_ap_vld" SIGIS="undef" SIGNAME="sinetest_0_layer16_out_0_V_ap_vld">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="External_Ports" PORT="data_out_valid"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="I" LEFT="15" NAME="input_V" RIGHT="0" SIGIS="data" SIGNAME="External_Ports_data_in">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="External_Ports" PORT="data_in"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="O" LEFT="15" NAME="layer16_out_0_V" RIGHT="0" SIGIS="data" SIGNAME="sinetest_0_layer16_out_0_V">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="External_Ports" PORT="data_out"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="O" LEFT="15" NAME="const_size_in_1" RIGHT="0" SIGIS="data" SIGNAME="sinetest_0_const_size_in_1">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="External_Ports" PORT="const_size_in_1_0"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="O" LEFT="15" NAME="const_size_out_1" RIGHT="0" SIGIS="data" SIGNAME="sinetest_0_const_size_out_1">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="External_Ports" PORT="const_size_out_1_0"/>
           </CONNECTIONS>
         </PORT>
         <PORT CLKFREQUENCY="100000000" DIR="I" NAME="ap_clk" SIGIS="clk" SIGNAME="External_Ports_CLK100MHZ">
@@ -151,14 +131,34 @@
             <CONNECTION INSTANCE="External_Ports" PORT="ap_done"/>
           </CONNECTIONS>
         </PORT>
+        <PORT DIR="O" NAME="ap_idle" SIGIS="undef" SIGNAME="sinetest_0_ap_idle">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="External_Ports" PORT="ap_idle"/>
+          </CONNECTIONS>
+        </PORT>
         <PORT DIR="O" NAME="ap_ready" SIGIS="undef" SIGNAME="sinetest_0_ap_ready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="External_Ports" PORT="ap_ready"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" NAME="ap_idle" SIGIS="undef" SIGNAME="sinetest_0_ap_idle">
+        <PORT DIR="I" LEFT="15" NAME="input_V" RIGHT="0" SIGIS="data" SIGNAME="External_Ports_data_in">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="External_Ports" PORT="ap_idle"/>
+            <CONNECTION INSTANCE="External_Ports" PORT="data_in"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" LEFT="15" NAME="layer8_out_0_V" RIGHT="0" SIGIS="data" SIGNAME="sinetest_0_layer8_out_0_V">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="External_Ports" PORT="data_out"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" LEFT="15" NAME="const_size_in_1" RIGHT="0" SIGIS="data" SIGNAME="sinetest_0_const_size_in_1">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="External_Ports" PORT="const_size_in_1_0"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" LEFT="15" NAME="const_size_out_1" RIGHT="0" SIGIS="data" SIGNAME="sinetest_0_const_size_out_1">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="External_Ports" PORT="const_size_out_1_0"/>
           </CONNECTIONS>
         </PORT>
       </PORTS>
@@ -167,8 +167,8 @@
           <PORTMAPS>
             <PORTMAP LOGICAL="start" PHYSICAL="ap_start"/>
             <PORTMAP LOGICAL="done" PHYSICAL="ap_done"/>
-            <PORTMAP LOGICAL="ready" PHYSICAL="ap_ready"/>
             <PORTMAP LOGICAL="idle" PHYSICAL="ap_idle"/>
+            <PORTMAP LOGICAL="ready" PHYSICAL="ap_ready"/>
           </PORTMAPS>
         </BUSINTERFACE>
       </BUSINTERFACES>

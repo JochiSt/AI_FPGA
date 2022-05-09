@@ -192,8 +192,8 @@ proc create_root_design { parentCell } {
   connect_bd_net -net sinetest_0_const_size_in_1_ap_vld [get_bd_ports const_size_in_1_ap_vld_0] [get_bd_pins sinetest_0/const_size_in_1_ap_vld]
   connect_bd_net -net sinetest_0_const_size_out_1 [get_bd_ports const_size_out_1_0] [get_bd_pins sinetest_0/const_size_out_1]
   connect_bd_net -net sinetest_0_const_size_out_1_ap_vld [get_bd_ports const_size_out_1_ap_vld_0] [get_bd_pins sinetest_0/const_size_out_1_ap_vld]
-  connect_bd_net -net sinetest_0_layer16_out_0_V [get_bd_ports data_out] [get_bd_pins sinetest_0/layer16_out_0_V]
-  connect_bd_net -net sinetest_0_layer16_out_0_V_ap_vld [get_bd_ports data_out_valid] [get_bd_pins sinetest_0/layer16_out_0_V_ap_vld]
+  connect_bd_net -net sinetest_0_layer16_out_0_V [get_bd_ports data_out] [get_bd_pins sinetest_0/layer8_out_0_V]
+  connect_bd_net -net sinetest_0_layer16_out_0_V_ap_vld [get_bd_ports data_out_valid] [get_bd_pins sinetest_0/layer8_out_0_V_ap_vld]
 
   # Create address segments
 
