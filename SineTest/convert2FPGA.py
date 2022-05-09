@@ -8,7 +8,7 @@ os.environ['PATH'] = '/opt/Xilinx/Vivado/2020.1/bin:' + os.environ['PATH']
 
 # use the already trained model
 from tensorflow.keras.models import load_model
-model = load_model('storedANN/sine_v0.1.h5')
+model = load_model('storedANN/sine_v0.2.h5')
 
 # Convert the model to FPGA firmware with hls4ml
 # Make an hls4ml config & model

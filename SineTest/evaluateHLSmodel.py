@@ -68,5 +68,5 @@ def evaluateHLSmodel(model, NSAMPLES=1000, config=None):
 
 if __name__ == "__main__":
     # use the already trained model
-    model = load_model('storedANN/sine_v0.1.h5')
+    model = load_model('storedANN/sine_v0.2.h5')
     evaluateHLSmodel(model)
