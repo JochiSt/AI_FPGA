@@ -65,7 +65,7 @@ ax1.set_xlabel('designed clock period / ns')
 
 plt.title('Used instances vs. clock')
 plt.tight_layout()
-plt.savefig('Used Instances.png')
+plt.savefig('UsedInstances.png')
 plt.show()
 
 
