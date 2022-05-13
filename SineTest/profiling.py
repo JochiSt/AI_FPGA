@@ -30,7 +30,8 @@ def profiling_hlsmodel(model):
     add_cfg['LayerName']['activation']  ['Precision'] = 'ap_fixed<11,2>'
     add_cfg['LayerName']['activation_1']['Precision'] = 'ap_fixed<12,2>'
 
-    print(add_cfg)
+    with open('profiling_layer_cfg.json', 'w') as outfile:
+        json.dump(add_cfg, outfile, indent=4, sort_keys=True)
 
     hls_model = convert2FPGA(model, 
                     clock_period=4, 
