@@ -11,22 +11,20 @@ os.environ['PATH'] = '/opt/Xilinx/Vivado/2020.1/bin:' + os.environ['PATH']
 import hls4ml
 from print_dict import print_dict
 
+# import own helper functions
+import AI_TF_helpers as helpers
+
 # some basic config
 #hls4ml.model.optimizer.OutputRoundingSaturationMode.layers = ['Activation']
 #hls4ml.model.optimizer.OutputRoundingSaturationMode.rounding_mode = 'AP_RND'
 #hls4ml.model.optimizer.OutputRoundingSaturationMode.saturation_mode = 'AP_SAT'
 
-def convert2FPGA(model, clock_period=4, build=True, profiling=False):
+def convert2FPGA(model, clock_period=4, build=True, profiling=False, additional_cfg={}):
     # create basic config
     if not profiling:
         model_cfg = hls4ml.utils.config_from_keras_model(model, granularity='model')
     else:
         model_cfg = hls4ml.utils.config_from_keras_model(model, granularity='name')
-        for layer in model_cfg['LayerName'].keys():
-            model_cfg['LayerName'][layer]['Trace'] = True
-            
-        model_cfg['LayerName']['output']['Precision']['weight'] = 'ap_fixed<6,2>'
-        model_cfg['LayerName']['output']['Precision']['bias']   = 'ap_fixed<3,0>'
 
     model_cfg['Model'] = {}
     model_cfg['Model']['ReuseFactor'] = 1
@@ -35,8 +33,12 @@ def convert2FPGA(model, clock_period=4, build=True, profiling=False):
     model_cfg['Model']['Precision'] = 'ap_fixed<16,6>'
     model_cfg['Model']['Precision'] = 'ap_fixed<16,6>'
     
-
+    # include the external configuration
+    model_cfg = helpers.merge_dicts(model_cfg, additional_cfg)
     
+    if profiling:
+        for layer in model_cfg['LayerName'].keys():
+            model_cfg['LayerName'][layer]['Trace'] = True
 
     cfg = hls4ml.converters.create_config()
     cfg['Backend'] = 'Vivado'               # alt: VivadoAccelerator
