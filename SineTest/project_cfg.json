@@ -1,0 +1,10 @@
+{
+    "Backend": "Vivado",
+    "ClockPeriod": 10,
+    "HLSConfig": {},
+    "IOType": "io_parallel",
+    "OutputDir": "sinetest",
+    "Part": "xc7a100tcsg324-1",
+    "ProjectName": "sinetest",
+    "XilinxPart": "xc7a100tcsg324-1"
+}
