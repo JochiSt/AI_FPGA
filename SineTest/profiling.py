@@ -12,32 +12,11 @@ def profiling_hlsmodel(model):
     # create blank cfg
     add_cfg = hls4ml.utils.config_from_keras_model(model, granularity='name')
     
-    add_cfg['LayerName']['layer_0']['Precision']['weight'] = 'ap_fixed<6,1>'
-    add_cfg['LayerName']['layer_0']['Precision']['bias']   = 'ap_fixed<11,2>'
-    add_cfg['LayerName']['layer_0']['Precision']['result'] = 'ap_fixed<11,2>'
-    add_cfg['LayerName']['layer_0_linear']['Precision'] = add_cfg['LayerName']['layer_0']['Precision']['result']
-        
-    add_cfg['LayerName']['layer_1']['Precision']['weight'] = 'ap_fixed<11,2>'
-    add_cfg['LayerName']['layer_1']['Precision']['bias']   = 'ap_fixed<9,1>'
-    add_cfg['LayerName']['layer_1']['Precision']['result'] = 'ap_fixed<11,2>'
-    add_cfg['LayerName']['layer_1_linear']['Precision'] = add_cfg['LayerName']['layer_1']['Precision']['result']    
-    
-    add_cfg['LayerName']['output']['Precision']['weight']  = 'ap_fixed<7,2>'
-    add_cfg['LayerName']['output']['Precision']['bias']    = 'ap_fixed<4,1>'
-    add_cfg['LayerName']['output']['Precision']['result']  = 'ap_fixed<8,1>'
-    add_cfg['LayerName']['output_linear']['Precision'] = add_cfg['LayerName']['output']['Precision']['result']
-    
-    add_cfg['LayerName']['activation']  ['Precision'] = 'ap_fixed<11,2>'
-    add_cfg['LayerName']['activation_1']['Precision'] = 'ap_fixed<12,2>'
-
-    with open('profiling_layer_cfg.json', 'w') as outfile:
-        json.dump(add_cfg, outfile, indent=4, sort_keys=True)
-
     hls_model = convert2FPGA(model, 
-                    clock_period=4, 
-                    build=False, 
-                    profiling=True, 
-                    additional_cfg = add_cfg
+                    clock_period=4,             # the clock period
+                    build=False,                # do not build the model
+                    profiling=True,             # do profiling cfg
+                    use_additional_cfg = True   # use config from json
                     )
     
     NSAMPLES = 1000
@@ -65,4 +44,5 @@ if __name__ == "__main__":
     # use the already trained model
     from tensorflow.keras.models import load_model
     model = load_model('storedANN/sine_v0.2.h5')
+    
     profiling_hlsmodel(model)
