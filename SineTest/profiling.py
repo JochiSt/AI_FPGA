@@ -2,17 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import hls4ml
+import json
 
 from convert2FPGA import convert2FPGA
 from network import generate_data
-
-from collections import defaultdict
-# from https://stackoverflow.com/questions/29348345/declaring-a-multi-dimensional-dictionary-in-python
-def nested_dict(n, type):
-    if n == 1:
-        return defaultdict(type)
-    else:
-        return defaultdict(lambda: nested_dict(n-1, type))
 
 def profiling_hlsmodel(model):
     
