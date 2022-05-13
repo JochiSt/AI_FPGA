@@ -1,0 +1,68 @@
+{
+    "LayerName": {
+        "activation": {
+            "Precision": "ap_fixed<11,2>",
+            "ReuseFactor": 1,
+            "table_size": 1024,
+            "table_t": "ap_fixed<18,8>"
+        },
+        "activation_1": {
+            "Precision": "ap_fixed<12,2>",
+            "ReuseFactor": 1,
+            "table_size": 1024,
+            "table_t": "ap_fixed<18,8>"
+        },
+        "input": {
+            "Precision": {
+                "result": "ap_fixed<16,6>"
+            }
+        },
+        "layer_0": {
+            "Precision": {
+                "bias": "ap_fixed<11,2>",
+                "result": "ap_fixed<11,2>",
+                "weight": "ap_fixed<6,1>"
+            },
+            "ReuseFactor": 1
+        },
+        "layer_0_linear": {
+            "Precision": "ap_fixed<11,2>",
+            "ReuseFactor": 1,
+            "table_size": 1024,
+            "table_t": "ap_fixed<18,8>"
+        },
+        "layer_1": {
+            "Precision": {
+                "bias": "ap_fixed<9,1>",
+                "result": "ap_fixed<11,2>",
+                "weight": "ap_fixed<11,2>"
+            },
+            "ReuseFactor": 1
+        },
+        "layer_1_linear": {
+            "Precision": "ap_fixed<11,2>",
+            "ReuseFactor": 1,
+            "table_size": 1024,
+            "table_t": "ap_fixed<18,8>"
+        },
+        "output": {
+            "Precision": {
+                "bias": "ap_fixed<4,1>",
+                "result": "ap_fixed<8,1>",
+                "weight": "ap_fixed<7,2>"
+            },
+            "ReuseFactor": 1
+        },
+        "output_linear": {
+            "Precision": "ap_fixed<8,1>",
+            "ReuseFactor": 1,
+            "table_size": 1024,
+            "table_t": "ap_fixed<18,8>"
+        }
+    },
+    "Model": {
+        "Precision": "ap_fixed<16,6>",
+        "ReuseFactor": 1,
+        "Strategy": "Latency"
+    }
+}
