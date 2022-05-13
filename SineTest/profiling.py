@@ -9,9 +9,6 @@ from network import generate_data
 
 def profiling_hlsmodel(model):
     
-    # create blank cfg
-    add_cfg = hls4ml.utils.config_from_keras_model(model, granularity='name')
-    
     hls_model = convert2FPGA(model, 
                     clock_period=4,             # the clock period
                     build=False,                # do not build the model
