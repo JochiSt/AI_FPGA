@@ -16,15 +16,27 @@ from print_dict import print_dict
 #hls4ml.model.optimizer.OutputRoundingSaturationMode.rounding_mode = 'AP_RND'
 #hls4ml.model.optimizer.OutputRoundingSaturationMode.saturation_mode = 'AP_SAT'
 
-def convert2FPGA(model, clock_period=4):
+def convert2FPGA(model, clock_period=4, build=True, profiling=False):
     # create basic config
-    model_cfg = hls4ml.utils.config_from_keras_model(model, granularity='model')
+    if not profiling:
+        model_cfg = hls4ml.utils.config_from_keras_model(model, granularity='model')
+    else:
+        model_cfg = hls4ml.utils.config_from_keras_model(model, granularity='name')
+        for layer in model_cfg['LayerName'].keys():
+            model_cfg['LayerName'][layer]['Trace'] = True
+            
+        model_cfg['LayerName']['output']['Precision']['weight'] = 'ap_fixed<6,2>'
+        model_cfg['LayerName']['output']['Precision']['bias']   = 'ap_fixed<3,0>'
+
     model_cfg['Model'] = {}
     model_cfg['Model']['ReuseFactor'] = 1
     #model_cfg['Model']['Strategy'] = 'Resource'
     model_cfg['Model']['Strategy'] = 'Latency'
     model_cfg['Model']['Precision'] = 'ap_fixed<16,6>'
     model_cfg['Model']['Precision'] = 'ap_fixed<16,6>'
+    
+
+    
 
     cfg = hls4ml.converters.create_config()
     cfg['Backend'] = 'Vivado'               # alt: VivadoAccelerator
@@ -36,7 +48,7 @@ def convert2FPGA(model, clock_period=4):
     cfg['OutputDir'] = 'sinetest'
     cfg['ProjectName'] = 'sinetest'
     #cfg['ClockPeriod'] = 10                 # 10 ns => 100MHz
-    cfg['ClockPeriod'] = clock_period                 # 4 ns => 125MHz
+    cfg['ClockPeriod'] = clock_period
 
     print("-----------------------------------")
     print("Configuration")
@@ -53,17 +65,19 @@ def convert2FPGA(model, clock_period=4):
                             )
 
     # Compile
+    print("Compiling HLS model")
     hls_model.compile()
 
     # Synthesize
-    print("Building the model ....")
-    print("This can take several minutes.")
-    hls_model.build(
-                    csim=True,  #
-                    export=True # this fails, unless you use faketime
-                    )
+    if build:
+        print("Building the model ....")
+        print("This can take several minutes.")
+        hls_model.build(
+                        csim=True,  #
+                        export=True # this fails, unless you use faketime
+                        )
 
-
+    return hls_model
 
 if __name__ == "__main__":
     # use the already trained model
