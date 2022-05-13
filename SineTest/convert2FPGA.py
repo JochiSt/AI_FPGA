@@ -26,16 +26,18 @@ def convert2FPGA(model, clock_period=4, build=True, profiling=False, additional_
     else:
         model_cfg = hls4ml.utils.config_from_keras_model(model, granularity='name')
 
+    # general config
     model_cfg['Model'] = {}
     model_cfg['Model']['ReuseFactor'] = 1
     #model_cfg['Model']['Strategy'] = 'Resource'
     model_cfg['Model']['Strategy'] = 'Latency'
     model_cfg['Model']['Precision'] = 'ap_fixed<16,6>'
     model_cfg['Model']['Precision'] = 'ap_fixed<16,6>'
-    
+
     # include the external configuration
     model_cfg = helpers.merge_dicts(model_cfg, additional_cfg)
-    
+
+    # for profiling, the trace mode must be enabled
     if profiling:
         for layer in model_cfg['LayerName'].keys():
             model_cfg['LayerName'][layer]['Trace'] = True
@@ -49,7 +51,6 @@ def convert2FPGA(model, clock_period=4, build=True, profiling=False, additional_
     cfg['KerasModel'] = model
     cfg['OutputDir'] = 'sinetest'
     cfg['ProjectName'] = 'sinetest'
-    #cfg['ClockPeriod'] = 10                 # 10 ns => 100MHz
     cfg['ClockPeriod'] = clock_period
 
     print("-----------------------------------")
@@ -85,9 +86,9 @@ if __name__ == "__main__":
     # use the already trained model
     from tensorflow.keras.models import load_model
     model = load_model('storedANN/sine_v0.2.h5')
-    
+
     convert2FPGA(model)
 
     # Check the reports
     hls4ml.report.read_vivado_report('sinetest')
-    
+
