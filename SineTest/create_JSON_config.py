@@ -24,8 +24,16 @@ def createLayerConfig(model):
 #TODO implement this function
 def createModelConfig(model):
     # create basic config
-    config = hls4ml.utils.config_from_keras_model(model, granularity='model')
+    model_cfg = hls4ml.utils.config_from_keras_model(model, granularity='model')
+    model_cfg['Model'] = {}
+    model_cfg['Model']['ReuseFactor'] = 1
+    #model_cfg['Model']['Strategy'] = 'Resource'
+    model_cfg['Model']['Strategy'] = 'Latency'
+    model_cfg['Model']['Precision'] = 'ap_fixed<16,6>'
+    model_cfg['Model']['Precision'] = 'ap_fixed<16,6>'
     
+    with open(model.name+'_model_cfg.json','w') as outfile:
+        json.dump(model_cfg, outfile, indent=4, sort_keys=True)
     
 if __name__ == "__main__":
     createProjectConfig()
