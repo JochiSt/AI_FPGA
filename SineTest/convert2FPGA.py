@@ -21,22 +21,27 @@ import AI_TF_helpers as helpers
 #hls4ml.model.optimizer.OutputRoundingSaturationMode.rounding_mode = 'AP_RND'
 #hls4ml.model.optimizer.OutputRoundingSaturationMode.saturation_mode = 'AP_SAT'
 
-def convert2FPGA(model, clock_period=4, build=True, profiling=False, use_additional_cfg=True):
-    # create basic config
-    if not profiling:
-        model_cfg = hls4ml.utils.config_from_keras_model(model, granularity='model')
-    else:
-        model_cfg = hls4ml.utils.config_from_keras_model(model, granularity='name')
+from create_JSON_config import createModelConfig, createLayerConfig, createProjectConfig
 
-    model_cfg['Model'] = {}
-    model_cfg['Model']['ReuseFactor'] = 1
-    #model_cfg['Model']['Strategy'] = 'Resource'
-    model_cfg['Model']['Strategy'] = 'Latency'
-    model_cfg['Model']['Precision'] = 'ap_fixed<16,6>'
-    model_cfg['Model']['Precision'] = 'ap_fixed<16,6>'
+def convert2FPGA(model, clock_period=4, build=True, profiling=False, use_additional_cfg=True):
+
+    if not os.path.exists(model.name+'_model_cfg.json'):
+        print("Model Config does not exists - it is created now...")
+        createModelConfig(model)
+
+    try:
+        with open(model.name+'_model_cfg.json') as data_file:
+            model_cfg = json.load(data_file)
+    except Exception as e:
+        print(e)
+        pass
     
     # include external configuration
     if use_additional_cfg:
+        if not os.path.exists(model.name+'_layer_cfg.json'):
+            print("Layer Config does not exists - it is created now...")
+            createLayerConfig(model) 
+            
         try:
             with open(model.name+'_layer_cfg.json') as data_file:
                 additional_cfg = json.load(data_file)
@@ -45,9 +50,15 @@ def convert2FPGA(model, clock_period=4, build=True, profiling=False, use_additio
             print(e)
             pass
     
+    # if profiling is used, we have to enable the Trace mode
     if profiling:
         for layer in model_cfg['LayerName'].keys():
             model_cfg['LayerName'][layer]['Trace'] = True
+
+    # check, whether the project configuration exists
+    if not os.path.exists('project_cfg.json'):
+        print("Project Config does not exists - it is created now...")
+        createProjectConfig()
 
     # load Project config from 'project_cfg.json'
     with open('project_cfg.json') as data_file:
