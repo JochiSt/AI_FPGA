@@ -49,18 +49,15 @@ def convert2FPGA(model, clock_period=4, build=True, profiling=False, use_additio
         for layer in model_cfg['LayerName'].keys():
             model_cfg['LayerName'][layer]['Trace'] = True
 
-    cfg = hls4ml.converters.create_config()
-    cfg['Backend'] = 'Vivado'               # alt: VivadoAccelerator
-    cfg['IOType'] = 'io_parallel'
-    cfg['XilinxPart'] = 'xc7a100tcsg324-1'  # Nexys 4
+    # load Project config from 'project_cfg.json'
+    with open('project_cfg.json') as data_file:
+        cfg = json.load(data_file)
+        
+    # there are some leftovers, which have to be set in this special way        
     cfg['Part'] = cfg['XilinxPart']
     cfg['HLSConfig'] = model_cfg
     cfg['KerasModel'] = model
-    cfg['OutputDir'] = 'sinetest'
-    cfg['ProjectName'] = 'sinetest'
-    #cfg['ClockPeriod'] = 10                 # 10 ns => 100MHz
-    cfg['ClockPeriod'] = clock_period
-
+    
     print("-----------------------------------")
     print("Configuration")
     print_dict(cfg)
