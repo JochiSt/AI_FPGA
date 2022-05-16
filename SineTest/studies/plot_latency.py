@@ -8,11 +8,14 @@ latency = np.array([])
 
 worst_latency = np.array([])
 best_latency  = np.array([])
-est_clk       = np.array([]) 
+est_clk       = np.array([])
 
 used_LUT      = np.array([])
 used_FF       = np.array([])
 used_DSP      = np.array([])
+
+interval_min  = np.array([])
+interval_max  = np.array([])
 
 for clock_ns in clock:
     with open('report_%d.json'%(clock_ns)) as infile:
@@ -23,6 +26,9 @@ for clock_ns in clock:
         best_latency  = np.append(best_latency,  data['CSynthesisReport']['BestLatency'])
         est_clk       = np.append(est_clk,       data['CSynthesisReport']['EstimatedClockPeriod'])
 
+        interval_min  = np.append(interval_min,  data['CSynthesisReport']['IntervalMin'])
+        interval_max  = np.append(interval_max,  data['CSynthesisReport']['IntervalMax'])
+
         used_LUT      = np.append(used_LUT,      data['CSynthesisReport']['LUT'])
         used_DSP      = np.append(used_DSP,      data['CSynthesisReport']['DSP48E'])
         used_FF       = np.append(used_FF,       data['CSynthesisReport']['FF'])
@@ -31,18 +37,32 @@ worst_latency = worst_latency.astype(float) * clock
 best_latency  = best_latency.astype(float) * clock
 
 fig, ax1 = plt.subplots()
-ax2 = ax1.twinx()
 #ax1.plot(clock, worst_latency, label='latency')
 ax1.plot(clock, best_latency, '.-g', label='best latency')
-ax2.plot(clock, clock - est_clk.astype(float), '.-b' ,label='des. clk - est. clk')
-
-ax2.axhline(0, color='black')
-#ax1.legend(loc='best')
-fig.legend(loc="upper right", framealpha=1)
 
 ax1.set_ylabel('latency / ns')
-ax2.set_ylabel('design period - est. period / ns')
 ax1.set_xlabel('designed clock period / ns')
+for label in ax1.get_yticklabels():
+    label.set_color('g')
+ax1.yaxis.label.set_color('g')
+
+ax2 = ax1.twinx()
+ax2.plot(clock, clock - est_clk.astype(float), '.-b' ,label='des. clk - est. clk')
+ax2.axhline(0, color='black')
+for label in ax2.get_yticklabels():
+    label.set_color('b')
+ax2.yaxis.label.set_color('b')
+ax2.set_ylabel('design period - est. period / ns')
+
+ax3 = ax1.twinx()
+ax3.spines.right.set_position(("axes", 1.15))
+ax3.plot(clock, interval_min, '.-r' ,label='initiation interval')
+for label in ax3.get_yticklabels():
+    label.set_color('r')
+ax3.yaxis.label.set_color('r')
+ax3.set_ylabel('initiation interval / clk cycles')
+
+fig.legend(loc="upper right", framealpha=1)
 
 plt.title('Latency estimation vs. clock')
 plt.tight_layout()
