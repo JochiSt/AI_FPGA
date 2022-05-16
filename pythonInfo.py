@@ -18,7 +18,7 @@ def printVersions():
     print('Keras ' + __version__)
 
     from qkeras import __version__
-    print('QKeras' + __version__)
+    print('QKeras ' + __version__)
 
     # from https://stackoverflow.com/a/53763710
     import warnings
