@@ -9,39 +9,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from network import generate_data, truth_function
+from convert2FPGA import convert2FPGA
 
 import hls4ml
 
-def createKerasConfig(model, granularity='model'):
-    # create basic config
-    config = hls4ml.utils.config_from_keras_model(model, 
-                                                    granularity=granularity)
-    return config
-
-def convert2HLS(model, config):
-    if not config:
-        # if we do not have a config, we make our own
-        config = createKerasConfig(model)
-
-    print("-----------------------------------")
-    print("Configuration")
-    print_dict(config)
-    print("-----------------------------------")
-    hls_model = hls4ml.converters.convert_from_keras_model(model,
-                                hls_config=config,
-                                project_name='sinetest',
-                                output_dir='sinetest',
-                                part='xcu250-figd2104-2L-e')
-    # model is written to output dir, if we want or not
-
-    # compile HLS model
-    hls_model.compile()
-
-    return hls_model
-
-def evaluateHLSmodel(model, NSAMPLES=1000, config=None):
+def evaluateHLSmodel(model, NSAMPLES=1000):
     # convert TF model into HLS4ML
-    hls_model = convert2HLS(model, config)
+    hls_model = convert2FPGA(model,
+        clock_period=4, build=False, profiling=False, use_additional_cfg=True)
 
     # generate data for evaluation
     x_test, y_test = generate_data(NSAMPLES)
@@ -64,7 +39,6 @@ def evaluateHLSmodel(model, NSAMPLES=1000, config=None):
     fig.legend()
     plt.savefig(model.name+"_keras_hls4ml.png")
     plt.show()
-
 
 if __name__ == "__main__":
     # use the already trained model
