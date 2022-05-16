@@ -36,15 +36,60 @@ for clock_ns in clock:
 worst_latency = worst_latency.astype(float) * clock
 best_latency  = best_latency.astype(float) * clock
 
-fig, ax1 = plt.subplots()
-#ax1.plot(clock, worst_latency, label='latency')
-ax1.plot(clock, best_latency, '.-g', label='best latency')
+fig, ax1 = plt.subplots(figsize=(8, 6))
+
+################################################################################
+
+ax1.plot(clock, best_latency,  '^-g', label='best latency')
+ax1.plot(clock, worst_latency, 'v-g', label='worst latency')
 
 ax1.set_ylabel('latency / ns')
 ax1.set_xlabel('designed clock period / ns')
 for label in ax1.get_yticklabels():
     label.set_color('g')
 ax1.yaxis.label.set_color('g')
+
+################################################################################
+# from https://stackoverflow.com/a/31808931
+ax2 = ax1.twiny()
+
+# Add some extra space for the second axis at the bottom
+fig.subplots_adjust(bottom=0.2)
+
+# Move twinned axis ticks and label from top to bottom
+ax2.xaxis.set_ticks_position("bottom")
+ax2.xaxis.set_label_position("bottom")
+
+# Offset the twin axis below the host
+ax2.spines["bottom"].set_position(("axes", -0.15))
+
+# Turn on the frame for the twin axis, but then hide all 
+# but the bottom spine
+ax2.set_frame_on(True)
+ax2.patch.set_visible(False)
+
+# as @ali14 pointed out, for python3, use this
+# for sp in ax2.spines.values():
+# and for python2, use this
+for sp in ax2.spines.values():
+    sp.set_visible(False)
+ax2.spines["bottom"].set_visible(True)
+
+ax2.set_xlabel("Clock / MHz")
+ax1Ticks = ax1.get_xticks()   
+ax2Ticks = ax1Ticks
+
+def tick_function(X):
+    X = X * 1e-9    # convert ns into s
+    F = 1./X        # turn into frequency
+    F = F * 1e-6     # convert into MHz
+    return ["%.2f" % z for z in V]
+
+ax2.set_xticks(ax2Ticks)
+ax2.set_xbound(ax1.get_xbound())
+ax2.set_xticklabels(tick_function(ax2Ticks))
+
+################################################################################
 
 ax2 = ax1.twinx()
 ax2.plot(clock, clock - est_clk.astype(float), '.-b' ,label='des. clk - est. clk')
@@ -56,7 +101,8 @@ ax2.set_ylabel('design period - est. period / ns')
 
 ax3 = ax1.twinx()
 ax3.spines.right.set_position(("axes", 1.15))
-ax3.plot(clock, interval_min, '.-r' ,label='initiation interval')
+ax3.plot(clock, interval_min, 'v-r' ,label='min. initiation interval')
+ax3.plot(clock, interval_max, '^-r' ,label='max. initiation interval')
 for label in ax3.get_yticklabels():
     label.set_color('r')
 ax3.yaxis.label.set_color('r')
