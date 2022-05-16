@@ -37,7 +37,7 @@ def evaluateHLSmodel(model, NSAMPLES=1000):
     ax1.set_ylabel('y values')
     plt.title('Comparison between Keras and HLS4ML')
     fig.legend()
-    plt.savefig(model.name+"_keras_hls4ml.png")
+    plt.savefig("plots/"+model.name+"_keras_hls4ml.png")
     plt.show()
 
 if __name__ == "__main__":

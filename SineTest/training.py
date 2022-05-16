@@ -84,7 +84,7 @@ def training(model, SAMPLES=100000):
     ax2.set_ylabel('MAE', color='r')
     plt.title('Training and validation Performance')
     fig.legend()
-    plt.savefig(model.name+"_train_perf.png")
+    plt.savefig("plots/"+model.name+"_train_perf.png")
     plt.show()
 
     # save network
@@ -100,7 +100,7 @@ def training(model, SAMPLES=100000):
     plt.plot(x_test, y_test, 'b.', label='Actual')
     plt.plot(x_test, predictions, 'r.', label='Prediction')
     plt.legend()
-    plt.savefig(model.name+"_prediction.png")
+    plt.savefig("plots/"+model.name+"_prediction.png")
     plt.show()
 
 if __name__ == "__main__":

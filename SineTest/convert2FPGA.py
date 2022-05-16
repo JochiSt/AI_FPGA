@@ -80,7 +80,7 @@ def convert2FPGA(model, clock_period=4, build=True, profiling=False, use_additio
     hls4ml.utils.plot_model(hls_model,
                             show_shapes=True,
                             show_precision=True,
-                            to_file=model.name+"_hls4ml.png"
+                            to_file="plots/"+model.name+"_hls4ml.png"
                             )
 
     # Compile

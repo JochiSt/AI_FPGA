@@ -35,7 +35,7 @@ def evaluateQuantModel(qmodel, NSAMPLES=1000):
     ax1.set_ylabel('y values')
     plt.title('Performance of Quantized Network')
     fig.legend()
-    plt.savefig(qmodel.name+"_perf_quant.png")
+    plt.savefig("plots/"+qmodel.name+"_perf_quant.png")
     plt.show()
 
 

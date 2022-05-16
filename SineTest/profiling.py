@@ -26,14 +26,14 @@ def profiling_hlsmodel(model):
                                     model=model, hls_model=hls_model, X= np.array(x_test) )
     
     if wp is not None:
-        wp.savefig( "prof_"+model.name+"_wp.png")
+        wp.savefig("plots/"+"prof_"+model.name+"_wp.png")
     if wph is not None:
-        wph.savefig("prof_"+model.name+"_wph.png")
+        wph.savefig("plots/"+"prof_"+model.name+"_wph.png")
         
     if ap is not None:
-        ap.savefig( "prof_"+model.name+"_ap.png")
+        ap.savefig("plots/"+"prof_"+model.name+"_ap.png")
     if aph is not None:
-        aph.savefig("prof_"+model.name+"_aph.png")
+        aph.savefig("plots/"+"prof_"+model.name+"_aph.png")
 
     plt.show()
 
