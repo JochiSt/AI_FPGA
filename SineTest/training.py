@@ -75,15 +75,32 @@ def training(model, SAMPLES=100000):
     ax1.plot(epochs, loss,     'b', label='Training loss')
     ax1.plot(epochs, val_loss, 'b--', label='Validation loss')
 
+    ax1.set_yscale('log')
+
     ax2 = ax1.twinx()
     ax2.plot(epochs, mae,     'r', label='Training MAE')
     ax2.plot(epochs, val_mae, 'r--', label='Validation MAE')
 
+    ax2.set_yscale('log')
+
+################################################################################
+    # tune the look-a-like of the plot
+
     ax1.set_xlabel('epochs')
-    ax1.set_ylabel('loss', color='b')
-    ax2.set_ylabel('MAE', color='r')
-    plt.title('Training and validation Performance')
-    fig.legend()
+    ax1.set_ylabel('loss')
+    ax2.set_ylabel('MAE')
+    plt.title('Training and validation Performance')    
+    
+    for label in ax1.get_yticklabels():
+        label.set_color('b')
+    ax1.yaxis.label.set_color('b')
+    
+    for label in ax2.get_yticklabels():
+        label.set_color('r')
+    ax2.yaxis.label.set_color('r')
+
+    fig.legend(framealpha=1)
+    fig.tight_layout()
     plt.savefig("plots/"+model.name+"_train_perf.png")
     plt.show()
 
@@ -99,7 +116,7 @@ def training(model, SAMPLES=100000):
     plt.title("Comparison of predictions to actual values")
     plt.plot(x_test, y_test, 'b.', label='Actual')
     plt.plot(x_test, predictions, 'r.', label='Prediction')
-    plt.legend()
+    plt.legend(framealpha=1)
     plt.savefig("plots/"+model.name+"_prediction.png")
     plt.show()
 
