@@ -210,13 +210,5 @@ if __name__ == "__main__":
     # use the already trained model
     from tensorflow.keras.models import load_model
     model = load_model('storedANN/sine_v0.2.h5')
-
-    # unfortunately, saving this model does not work
-    #model = create_model(quantized=False)
-    #model = training(model, store=False)
-
     qmodel = quantize_model(model)
-    
-    #training(qmodel)
-        
     helpers.save_model(qmodel)
