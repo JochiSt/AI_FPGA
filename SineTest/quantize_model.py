@@ -178,29 +178,45 @@ def quantize_model(model):
     y_train, y_test, y_validate = create_datasets(10000)
 
     autoqk.fit(x_train, y_train, validation_data=(x_test, y_test),
-                                batch_size=1024,
+                                batch_size=50,
                                 epochs=50
                         )
 
+    print("\n"*4)
+    print("#"*80)
+    print("Train Best Model")
+    
     qmodel = autoqk.get_best_model()
 
+    qmodel.fit(x_train, y_train, 
+                validation_data=(x_test, y_test),
+                batch_size=50,
+                epochs=50
+                )
+
+    print("#"*80)
+    print("Model Summary:")
     qmodel.summary()
 
+    print("#"*80)
+    print("Qstats:")
     print_qstats(qmodel)
 
+    print("#"*80)
     qmodel._name = qmodel.name + "_quant"
-
     return qmodel
 
 if __name__ == "__main__":
     # use the already trained model
     from tensorflow.keras.models import load_model
-    model = load_model('storedANN/sine_v0.1.h5')
+    model = load_model('storedANN/sine_v0.2.h5')
 
     # unfortunately, saving this model does not work
     #model = create_model(quantized=False)
     #model = training(model, store=False)
 
     qmodel = quantize_model(model)
-
+    
+    #training(qmodel)
+        
     helpers.save_model(qmodel)
