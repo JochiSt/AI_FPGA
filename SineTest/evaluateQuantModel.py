@@ -40,13 +40,11 @@ def evaluateQuantModel(qmodel, NSAMPLES=1000):
 
 
 if __name__ == "__main__":
-    if False:
+    if True:
         # use the already trained model
-        from tensorflow.keras.models import load_model
-        from qkeras.utils import _add_supported_quantized_objects
-        co = {}
-        _add_supported_quantized_objects(co)
-        model = load_model('storedANN/sine_v0.1_quant', custom_objects=co)
+        from AI_TF_helpers import load_quant_model
+        model = load_quant_model("sine_v0.2_quant")
+        
     else:
         from network import create_model
         # generate the network
