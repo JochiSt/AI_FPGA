@@ -44,9 +44,9 @@ def get_computing_costs(model):
     # caculate energy of the derived data type map.
     energy_dict = q.pe(
             # whether to store parameters in dram, sram, or fixed
-            weights_on_memory="sram",
+            weights_on_memory="fixed",
             # store activations in dram or sram
-            activations_on_memory="sram",
+            activations_on_memory="dram",
             # minimum sram size in number of bits. Let's assume a 16MB SRAM.
             min_sram_size=8*16*1024*1024,
             # whether load data from dram to sram (consider sram as a cache
@@ -73,26 +73,29 @@ def quantize_model(model):
 
     # definition, which quantization is allowed
     # and their forgiving factors
+    
+    # alpha=1 for setting the scale factor of the number
+    # from https://github.com/google/qkeras/issues/60#issuecomment-840609502
     quantization_config = {
         "kernel": {
-            "binary": 1,
-            "stochastic_binary": 1,
-            "ternary": 2,
-            "stochastic_ternary": 2,
-            "quantized_bits(2,1,1,alpha=1.0)": 2,
-            "quantized_bits(4,0,1,alpha=1.0)": 4,
-            "quantized_bits(8,0,1,alpha=1.0)": 8,
-            "quantized_po2(4,1)": 4
+#            "binary": 1,
+#            "stochastic_binary": 1,
+#            "ternary": 2,
+#            "stochastic_ternary": 2,
+            "quantized_bits(2,1,1,alpha=1)": 2,
+            "quantized_bits(4,0,1,alpha=1)": 4,
+            "quantized_bits(8,0,1,alpha=1)": 8,
+#            "quantized_po2(4,1)": 4
         },
         "bias": {
-            "quantized_bits(4,0,1)": 4,
-            "quantized_bits(8,3,1)": 8,
-            "quantized_po2(4,8)": 4
+            "quantized_bits(4,0,1,alpha=1)": 4,
+            "quantized_bits(8,3,1,alpha=1)": 8,
+#            "quantized_po2(4,8)": 4
         },
         "activation": {
-            "binary": 1,
-            "ternary": 2,
-            "quantized_relu_po2(4,4)": 4,
+#            "binary": 1,
+#            "ternary": 2,
+#            "quantized_relu_po2(4,4)": 4,
             "quantized_relu(3,1)": 3,
             "quantized_relu(4,2)": 4,
             "quantized_relu(8,2)": 8,
@@ -100,11 +103,11 @@ def quantize_model(model):
             "quantized_relu(16,8)": 16
         },
         "linear": {
-            "binary": 1,
-            "ternary": 2,
-            "quantized_bits(4,1)": 4,
-            "quantized_bits(8,2)": 8,
-            "quantized_bits(16,10)": 16
+#            "binary": 1,
+#            "ternary": 2,
+            "quantized_bits(4,1,alpha=1)": 4,
+            "quantized_bits(8,2,alpha=1)": 8,
+            "quantized_bits(16,10,alpha=1)": 16
         }
     }
 
@@ -155,12 +158,13 @@ def quantize_model(model):
         "seed": 42,
         "limit": limit,
         "tune_filters": "layer",
-        "tune_filters_exceptions": "^dense",
+        "tune_filters_exceptions": "",
+        #"tune_filters_exceptions": "^dense",
         "distribution_strategy": cur_strategy,
         # first layer is input, last layer is output
         "layer_indexes": range(1, len(model.layers) - 1),
         # how many optimisation trials should be done?
-        "max_trials": 2
+        "max_trials": 4,
     }
 
     print("quantizing layers:",\
