@@ -132,6 +132,4 @@ if __name__ == "__main__":
 
     training(model)
 
-    helpers.save_model(model)
-
     helpers.plot_weights(model)
